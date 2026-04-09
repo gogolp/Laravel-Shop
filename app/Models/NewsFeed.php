@@ -17,6 +17,8 @@ class NewsFeed extends Model
         'image_url',
         'type',
         'is_active',
+        'start_date',
+        'end_date'
     ];
 
     protected $casts = [

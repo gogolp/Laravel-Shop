@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ByteBar Admin</title>
-    <link rel="icon" href="img/logo.png" type="image/png">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ time() }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
@@ -14,21 +15,36 @@
 <body class="admin-body">
 
     <div class="admin-container">
-        <aside class="admin-sidebar">
-            <div class="admin-logo">
-                <div class="logo-icon">B</div>
-                <span>ByteBar Admin</span>
+        <aside class="admin-sidebar" id="admin-sidebar">
+            <div class="admin-sidebar-top">
+                <div class="admin-logo">
+                    <div class="logo-icon">B</div>
+                    <span>ByteBar Admin</span>
+                </div>
+                <button class="sidebar-close-btn" id="sidebar-close-btn"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <nav class="admin-nav">
                 <ul>
-                    <li><a href="#" class="admin-nav-link" data-target="news">Події та новини</a></li>
-                    <li><a href="#" class="admin-nav-link active-link" data-target="menu">Меню</a></li>
-                    <li><a href="#" class="admin-nav-link" data-target="categories">Категорії товарів</a></li>
-                    <li><a href="#" class="admin-nav-link" data-target="promo">Акції та знижки</a></li>
+                    <li><a href="#" class="admin-nav-link" data-target="news">РќРѕРІРёРЅРё С‚Р° РџРѕРґС–С—</a></li>
+                    <li><a href="#" class="admin-nav-link active-link" data-target="menu">РњРµРЅСЋ</a></li>
+                    <li><a href="#" class="admin-nav-link" data-target="categories">РљР°С‚РµРіРѕСЂС–С— С‚РѕРІР°СЂС–РІ</a></li>
+                    <li><a href="#" class="admin-nav-link" data-target="promo">РђРєС†С–С— С‚Р° Р·РЅРёР¶РєРё</a></li>
                 </ul>
             </nav>
         </aside>
+
+        <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+        <div class="admin-mobile-header">
+            <button class="hamburger-btn" id="hamburger-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <div class="admin-logo-mobile">
+                <div class="logo-icon">B</div>
+                <span>ByteBar Admin</span>
+            </div>
+        </div>
 
         <main class="admin-content">
             
@@ -36,199 +52,154 @@
                 
                 <div class="view-list">
                     <div class="section-header">
-                        <h2>Меню</h2>
-                        <button class="btn btn-primary btn-add"><i class="fa-solid fa-plus"></i> Додати товар</button>
+                        <h2>РњРµРЅСЋ</h2>
+                        <button class="btn btn-primary btn-add"><i class="fa-solid fa-plus"></i> Р”РѕРґР°С‚Рё РїРѕР·РёС†С–СЋ</button>
                     </div>
 
                     <div class="filter-box">
-                        <label>Фільтр за категорією</label>
+                        <label>Р¤С–Р»СЊС‚СЂ Р·Р° РєР°С‚РµРіРѕСЂС–С”СЋ</label>
                         <select class="admin-select">
-                            <option>Всі категорії</option>
-                            <option>Кава</option>
-                            <option>Десерти</option>
-                            <option>Власне виробництво</option>
+                            <option>Р’СЃС– РєР°С‚РµРіРѕСЂС–С—</option>
+                            <option>РљР°РІР°</option>
+                            <option>РЎРЅРµРєРё</option>
+                            <option>Р’Р»Р°СЃРЅРµ РІРёСЂРѕР±РЅРёС†С‚РІРѕ</option>
                         </select>
                     </div>
 
                     <div class="admin-list">
-                        <div class="admin-card-row">
-                            <img src="{{ asset('img/Photo/Photo_2.png') }}" alt="Cappuccino">
-                            <div class="row-info">
-                                <h4>Фірмовий капучино</h4>
-                                <span class="row-category">Кава</span>
-                                <p>Класичний італійський капучино з ніжною молочною піною</p>
-                                <div class="row-meta"><small>Кешбек: 7%</small></div>
-                            </div>
-                            <div class="row-price">45 ? <span class="tag-blue">Товар дня</span></div>
-                            <div class="row-actions">
-                                <button class="btn-icon edit"><i class="fa-solid fa-pen"></i></button>
-                                <button class="btn-icon delete"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        </div>
-
-                        <div class="admin-card-row">
-                            <img src="{{ asset('img/Photo/Photo_1.png') }}" alt="Sandwich">
-                            <div class="row-info">
-                                <h4>Сендвіч з лососем</h4>
-                                <span class="row-category">Власне виробництво</span>
-                                <p>Свіжий сендвіч з норвезьким лососем та авокадо</p>
-                                <div class="row-meta"><small>Кешбек: 10%</small></div>
-                            </div>
-                            <div class="row-price">100 ?</div>
-                            <div class="row-actions">
-                                <button class="btn-icon edit"><i class="fa-solid fa-pen"></i></button>
-                                <button class="btn-icon delete"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        </div>
+                        <!-- Items injected dynamically via admin.js -->
                     </div>
                 </div>
 
                 <div class="view-form" style="display: none;">
                     <div class="section-header">
-                        <h3><i class="fa-solid fa-arrow-left btn-back-icon"></i> Новий товар</h3>
+                        <h3><i class="fa-solid fa-arrow-left btn-back-icon"></i> Р”РѕРґР°С‚Рё РїРѕР·РёС†С–СЋ</h3>
                     </div>
                     
                     <div class="form-container-card">
-                        <form class="admin-form">
+                        <form class="admin-form" id="menu-form">
                             <div class="form-group">
-                                <label>Назва товару *</label>
-                                <input type="text" placeholder="Введіть назву товару">
+                                <label>РќР°Р·РІР° РїРѕР·РёС†С–С— *</label>
+                                <input type="text" placeholder="Р’РІРµРґС–С‚СЊ РЅР°Р·РІСѓ РїРѕР·РёС†С–С—" required>
                             </div>
                             
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Категорія *</label>
-                                    <select>
-                                        <option>Кава</option>
-                                        <option>Десерти</option>
-                                        <option>Власне виробництво</option>
+                                    <label>РљР°С‚РµРіРѕСЂС–СЏ *</label>
+                                    <select required>
+                                        <option>РљР°РІР°</option>
+                                        <option>РЎРЅРµРєРё</option>
+                                        <option>Р’Р»Р°СЃРЅРµ РІРёСЂРѕР±РЅРёС†С‚РІРѕ</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Ціна (?) *</label>
-                                    <input type="number" placeholder="0">
+                                    <label>Р¦С–РЅР° (в‚ґ) *</label>
+                                    <input type="number" placeholder="0" required min="0">
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>Опис *</label>
-                                <textarea placeholder="Введіть опис товару" rows="3"></textarea>
+                                <label>РћРїРёСЃ</label>
+                                <textarea placeholder="Р’РІРµРґС–С‚СЊ РѕРїРёСЃ РїРѕР·РёС†С–С—" rows="3"></textarea>
                             </div>
 
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Позначка</label>
+                                    <label>РўРµРі</label>
                                     <select>
-                                        <option>Без позначки</option>
-                                        <option>Новинка</option>
-                                        <option>Товар дня</option>
+                                        <option>РўРѕРї РїСЂРѕРґР°Р¶С–РІ</option>
+                                        <option>РќРѕРІРёРЅРєР°</option>
+                                        <option>Р‘РµР· С‚РµРіСѓ</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>Кешбек (%) *</label>
+                                    <label>РџР”Р’ (%)</label>
                                     <select>
-                                        <option>5% - Базовий</option>
-                                        <option>7% - Стандарт</option>
-                                        <option>10% - Максимум</option>
+                                        <option>5% - РЎС‚Р°РЅРґР°СЂС‚</option>
+                                        <option>7% - РџС–Р»СЊРіРѕРІРёР№</option>
+                                        <option>10% - РђРєС†РёР·</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label>URL зображення *</label>
-                                <input type="text" placeholder="https://example.com/image.jpg">
+                                <label>Р—РѕР±СЂР°Р¶РµРЅРЅСЏ</label>
+                                <input type="file" accept="image/*" class="file-input">
+                                <div class="image-preview-container" style="margin-top: 10px;">
+                                    <img class="img-preview" src="" style="display: none; height: 80px; object-fit: cover; border-radius: 8px;">
+                                </div>
                             </div>
 
-                            <div class="form-divider-title">Додаткова інформація (необов'язково)</div>
+                            <div class="form-divider-title">РџРѕР¶РёРІРЅР° С†С–РЅРЅС–СЃС‚СЊ (РЅРµРѕР±РѕРІ'СЏР·РєРѕРІРѕ)</div>
 
                             <div class="form-group">
-                                <label>Склад</label>
-                                <input type="text" placeholder="Введіть склад товару">
+                                <label>Р•РЅРµСЂРіРµС‚РёС‡РЅР° С†С–РЅРЅС–СЃС‚СЊ</label>
+                                <input type="text" placeholder="РЅР°РїСЂРёРєР»Р°Рґ, 145 РєРєР°Р» / 607 РєР”Р¶">
                             </div>
                             <div class="form-group">
-                                <label>Поживна цінність</label>
-                                <input type="text" placeholder="Калорії, білки, жири, вуглеводи">
+                                <label>РЎРєР»Р°Рґ РїСЂРѕРґСѓРєС‚С–РІ</label>
+                                <input type="text" placeholder="Р±С–Р»РєРё, Р¶РёСЂРё, РІСѓРіР»РµРІРѕРґРё, С‚РѕС‰Рѕ">
                             </div>
-                            <div class="form-group">
-                                <label>Алергени</label>
-                                <input type="text" placeholder="Глютен, молоко, горіхи тощо">
-                            </div>
-
                             <div class="form-actions-footer">
                                 <button type="button" class="btn btn-primary btn-save">
-                                    <i class="fa-regular fa-floppy-disk"></i> Зберегти
+                                    <i class="fa-regular fa-floppy-disk"></i> Р—Р±РµСЂРµРіС‚Рё
                                 </button>
-                                <button type="button" class="btn btn-outline-gray btn-cancel">Скасувати</button>
+                                <button type="button" class="btn btn-outline-gray btn-cancel">РЎРєР°СЃСѓРІР°С‚Рё</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </section>
 
-
             <section id="news" class="admin-section">
                 <div class="view-list">
                     <div class="section-header">
-                        <h2>Події та новини</h2>
-                        <button class="btn btn-primary btn-add"><i class="fa-solid fa-plus"></i> Додати подію</button>
+                        <h2>РќРѕРІРёРЅРё С‚Р° РџРѕРґС–С—</h2>
+                        <button class="btn btn-primary btn-add"><i class="fa-solid fa-plus"></i> Р”РѕРґР°С‚Рё РЅРѕРІРёРЅСѓ</button>
                     </div>
 
                     <div class="admin-list">
-                        <div class="admin-card-row">
-                            <img src="{{ asset('img/Photo/Photo_5.png') }}" alt="Cheese">
-                            <div class="row-info">
-                                <h4>15% знижка на всі сири у п'ятницю</h4>
-                                <p>Святкуємо місяць крафтового сиру! Спробуйте найкращі локальні сири зі знижкою.</p>
-                                <div class="row-date"><i class="fa-regular fa-calendar"></i> 15.11.2025</div>
-                            </div>
-                            <div class="row-actions">
-                                <button class="btn-icon edit"><i class="fa-solid fa-pen"></i></button>
-                                <button class="btn-icon delete"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        </div>
+                        <!-- Items injected dynamically via admin.js -->
                     </div>
                 </div>
 
                 <div class="view-form" style="display: none;">
                     <div class="section-header">
-                        <h3><i class="fa-solid fa-arrow-left btn-back-icon"></i> Нова подія</h3>
+                        <h3><i class="fa-solid fa-arrow-left btn-back-icon"></i> Р”РѕРґР°С‚Рё РїРѕРґС–СЋ</h3>
                     </div>
                     
                     <div class="form-container-card">
-                        <form class="admin-form">
+                        <form class="admin-form" id="news-form">
                             <div class="form-group">
-                                <label>Назва події *</label>
-                                <input type="text" placeholder="Введіть назву події">
+                                <label>РќР°Р·РІР° РїРѕРґС–С— *</label>
+                                <input type="text" placeholder="Р’РІРµРґС–С‚СЊ РЅР°Р·РІСѓ РїРѕРґС–С—" required>
                             </div>
                             <div class="form-group">
-                                <label>Опис події</label>
-                                <textarea placeholder="Введіть опис події" rows="3"></textarea>
+                                <label>РћРїРёСЃ РїРѕРґС–С—</label>
+                                <textarea placeholder="Р’РІРµРґС–С‚СЊ РѕРїРёСЃ РїРѕРґС–С—" rows="3"></textarea>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Дата початку *</label>
-                                    <input type="date">
+                                    <label>Р”Р°С‚Р° РїРѕС‡Р°С‚РєСѓ *</label>
+                                    <input type="date" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Дата закінчення *</label>
-                                    <input type="date">
+                                    <label>Р”Р°С‚Р° Р·Р°РІРµСЂС€РµРЅРЅСЏ *</label>
+                                    <input type="date" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Зображення події</label>
-                                <button type="button" class="btn-upload">
-                                    <i class="fa-regular fa-image"></i> Завантажити фото
-                                </button>
-                            </div>
-                            <div class="form-group">
-                                <label>Або вставте URL зображення</label>
-                                <input type="text" placeholder="https://example.com/image.jpg">
+                                <label>Р—РѕР±СЂР°Р¶РµРЅРЅСЏ (РЅРµРѕР±РѕРІ'СЏР·РєРѕРІРѕ)</label>
+                                <input type="file" accept="image/*" class="file-input">
+                                <div class="image-preview-container" style="margin-top: 10px;">
+                                    <img class="img-preview" src="" style="display: none; height: 80px; object-fit: cover; border-radius: 8px;">
+                                </div>
                             </div>
                             <div class="form-actions-footer">
-                                <button type="button" class="btn btn-primary btn-save">
-                                    <i class="fa-regular fa-floppy-disk"></i> Зберегти
+                                <button type="submit" class="btn btn-primary btn-save">
+                                    <i class="fa-regular fa-floppy-disk"></i> Р—Р±РµСЂРµРіС‚Рё
                                 </button>
-                                <button type="button" class="btn btn-outline-gray btn-cancel">Скасувати</button>
+                                <button type="button" class="btn btn-outline-gray btn-cancel">РЎРєР°СЃСѓРІР°С‚Рё</button>
                             </div>
                         </form>
                     </div>
@@ -239,19 +210,33 @@
             <section id="categories" class="admin-section">
                 <div class="view-list">
                     <div class="section-header">
-                        <h2>Категорії товарів</h2>
-                        <button class="btn btn-primary"><i class="fa-solid fa-plus"></i> Створити категорію</button>
+                        <h2>РљР°С‚РµРіРѕСЂС–С— С‚РѕРІР°СЂС–РІ</h2>
+                        <button class="btn btn-primary btn-add"><i class="fa-solid fa-plus"></i> Р”РѕРґР°С‚Рё РєР°С‚РµРіРѕСЂС–СЋ</button>
                     </div>
 
                     <div class="categories-grid">
-                        <div class="category-card">
-                            <div><h4>Кава</h4><p>2 товарів</p></div>
-                            <button class="btn-icon edit-simple"><i class="fa-solid fa-pen"></i></button>
-                        </div>
-                        <div class="category-card">
-                            <div><h4>Снеки</h4><p>0 товарів</p></div>
-                            <button class="btn-icon edit-simple"><i class="fa-solid fa-pen"></i></button>
-                        </div>
+                        <!-- Dynamic content -->
+                    </div>
+                </div>
+
+                <div class="view-form" style="display: none;">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-arrow-left btn-back-icon"></i> Р”РѕРґР°С‚Рё РєР°С‚РµРіРѕСЂС–СЋ</h3>
+                    </div>
+                    
+                    <div class="form-container-card">
+                        <form class="admin-form" id="category-form">
+                            <div class="form-group">
+                                <label>РќР°Р·РІР° РєР°С‚РµРіРѕСЂС–С— *</label>
+                                <input type="text" placeholder="Р’РІРµРґС–С‚СЊ РЅР°Р·РІСѓ РєР°С‚РµРіРѕСЂС–С—" required>
+                            </div>
+                            <div class="form-actions-footer">
+                                <button type="submit" class="btn btn-primary btn-save">
+                                    <i class="fa-regular fa-floppy-disk"></i> Р—Р±РµСЂРµРіС‚Рё
+                                </button>
+                                <button type="button" class="btn btn-outline-gray btn-cancel">РЎРєР°СЃСѓРІР°С‚Рё</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </section>
@@ -260,77 +245,56 @@
             <section id="promo" class="admin-section">
                 <div class="view-list">
                     <div class="section-header">
-                        <h2>Акції та знижки</h2>
-                        <button class="btn btn-primary btn-add"><i class="fa-solid fa-plus"></i> Додати акцію</button>
+                        <h2>РђРєС†С–С— С‚Р° Р·РЅРёР¶РєРё</h2>
+                        <button class="btn btn-primary btn-add"><i class="fa-solid fa-plus"></i> Р”РѕРґР°С‚Рё Р°РєС†С–СЋ</button>
                     </div>
 
                     <div class="admin-list">
-                        <div class="admin-card-row">
-                            <img src="{{ asset('img/Photo/Photo_1.png') }}" alt="Promo">
-                            <div class="row-info">
-                                <div class="flex-head">
-                                    <h4>Сендвіч дня</h4>
-                                    <span class="status-badge active">Активна</span>
-                                </div>
-                                <p>Свіжий багет з авокадо, лососем та сирним кремом</p>
-                                <div class="promo-details">
-                                    <span class="promo-val">Знижка: 15%</span>
-                                    <span class="promo-date">01.11.2024 - 15.11.2024</span>
-                                </div>
-                            </div>
-                            <div class="row-actions-promo">
-                                <button class="btn-outline-orange">Деактивувати</button>
-                                <button class="btn-icon edit"><i class="fa-solid fa-pen"></i></button>
-                                <button class="btn-icon delete"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                        </div>
+                        <!-- Items injected dynamically via admin.js -->
                     </div>
                 </div>
 
                 <div class="view-form" style="display: none;">
                     <div class="section-header">
-                        <h3><i class="fa-solid fa-arrow-left btn-back-icon"></i> Нова акція</h3>
+                        <h3><i class="fa-solid fa-arrow-left btn-back-icon"></i> Р”РѕРґР°С‚Рё Р°РєС†С–СЋ</h3>
                     </div>
 
                     <div class="form-container-card">
-                        <form class="admin-form">
+                        <form class="admin-form" id="promo-form">
                             <div class="form-group">
-                                <label>Назва акції *</label>
-                                <input type="text" placeholder="Введіть назву акції">
+                                <label>РќР°Р·РІР° Р°РєС†С–С— *</label>
+                                <input type="text" placeholder="Р’РІРµРґС–С‚СЊ РЅР°Р·РІСѓ Р°РєС†С–С—" required>
                             </div>
                             <div class="form-group">
-                                <label>Опис акції</label>
-                                <textarea placeholder="Введіть опис акції" rows="3"></textarea>
+                                <label>РћРїРёСЃ Р°РєС†С–С—</label>
+                                <textarea placeholder="РћРїРёСЃ СѓРјРѕРІ Р°РєС†С–С—" rows="3"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>Знижка (%) *</label>
-                                <input type="number" placeholder="0">
+                                <label>Р—РЅРёР¶РєР° (%) *</label>
+                                <input type="number" placeholder="0" required min="0" max="100">
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Дата початку *</label>
-                                    <input type="date">
+                                    <label>Р”Р°С‚Р° РїРѕС‡Р°С‚РєСѓ *</label>
+                                    <input type="date" required>
                                 </div>
                                 <div class="form-group">
-                                    <label>Дата закінчення *</label>
-                                    <input type="date">
+                                    <label>Р”Р°С‚Р° Р·Р°РІРµСЂС€РµРЅРЅСЏ *</label>
+                                    <input type="date" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label>Зображення акції</label>
-                                <button type="button" class="btn-upload">
-                                    <i class="fa-regular fa-image"></i> Завантажити фото
-                                </button>
-                            </div>
-                            <div class="form-group">
-                                <label>Або вставте URL зображення</label>
-                                <input type="text" placeholder="https://example.com/image.jpg">
+                                <label>Р—РѕР±СЂР°Р¶РµРЅРЅСЏ Р°РєС†С–С— (РЅРµРѕР±РѕРІ'СЏР·РєРѕРІРѕ)</label>
+                                <input type="file" accept="image/*" class="file-input">
+                                <div class="image-preview-container" style="margin-top: 10px;">
+                                    <img class="img-preview" src="" style="display: none; height: 80px; object-fit: cover; border-radius: 8px;">
+                                </div>
                             </div>
                             <div class="form-actions-footer">
-                                <button type="button" class="btn btn-primary btn-save">
-                                    <i class="fa-regular fa-floppy-disk"></i> Зберегти
+                                <button type="submit" class="btn btn-primary btn-save">
+                                    <i class="fa-regular fa-floppy-disk"></i> Р—Р±РµСЂРµРіС‚Рё
                                 </button>
-                                <button type="button" class="btn btn-outline-gray btn-cancel">Скасувати</button>
+                                <button type="button" class="btn btn-outline-gray btn-cancel">РЎРєР°СЃСѓРІР°С‚Рё</button>
                             </div>
                         </form>
                     </div>
@@ -340,6 +304,6 @@
         </main>
     </div>
 
-    <script src="{{ asset('js/admin.js') }}"></script>
+    <script src="{{ asset('js/admin.js') }}?v={{ time() + 10 }}"></script>
 </body>
 </html>

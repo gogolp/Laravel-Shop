@@ -76,6 +76,22 @@
                 <i class="fa-solid fa-qrcode"></i>
                 <h3>Завантажуй додаток та отримуй унікальні знижки за айтішки</h3>
                 <p>Просто скануйте свій QR-код при покупках та отримуйте знижки і спеціальні пропозиції</p>
+                <div class="cta-store-buttons">
+                    <a href="https://play.google.com/store" target="_blank" class="btn-store">
+                        <i class="fa-brands fa-google-play"></i>
+                        <div>
+                            <span class="btn-store-sub">Завантажити в</span>
+                            <span class="btn-store-main">Google Play</span>
+                        </div>
+                    </a>
+                    <a href="https://www.apple.com/app-store/" target="_blank" class="btn-store">
+                        <i class="fa-brands fa-apple"></i>
+                        <div>
+                            <span class="btn-store-sub">Завантажити в</span>
+                            <span class="btn-store-main">App Store</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </section>
 

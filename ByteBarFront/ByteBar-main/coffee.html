@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteBar - Кава та Меню</title>
+    <link rel="icon" href="img/logo.png" type="image/png">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    
+    <header>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="img/logo.png" alt="ByteBar Logo" class="logo-img"> ByteBar
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <section id="menu" style="padding-top: 0;">
+            <div class="menu-header-bg">
+                <img src="img/Strip/left_strip.png" class="bg-strip strip-left" alt="">
+
+                <div class="container">
+                    <h2>Досліджуйте наше меню</h2>
+                    <p class="menu-subtitle">Свіжі продукти власного виробництва щодня</p>
+                </div>
+
+                <img src="img/Strip/right_strip.png" class="bg-strip strip-right" alt="">
+            </div>
+            
+            <div class="container menu-content-container">
+                <div class="catalog-nav">
+                    <button class="catalog-tab active-category" data-tab="coffee">
+                        <img src="img/Icon_2/Icon_1.png" alt="Кава">
+                        <p>Кава</p>
+                    </button>
+                    <button class="catalog-tab" data-tab="snacks">
+                        <img src="img/Icon_2/Icon_2.png" alt="Снеки">
+                        <p>Снеки</p>
+                    </button>
+                    <button class="catalog-tab" data-tab="own">
+                        <img src="img/Icon_2/Icon_3.png" alt="Власне">
+                        <p>Власне</p>
+                    </button>
+                    <button class="catalog-tab" data-tab="desserts">
+                        <img src="img/Icon_2/Icon_4.png" alt="Десерти">
+                        <p>Десерти</p>
+                    </button>
+                    <button class="catalog-tab" data-tab="healthy">
+                        <img src="img/Icon_2/Icon_5.png" alt="Здорове">
+                        <p>Здорове</p>
+                    </button>
+                    <button class="catalog-tab" data-tab="bakery">
+                        <img src="img/Icon_2/Icon_6.png" alt="Випічка">
+                        <p>Випічка</p>
+                    </button>
+                </div>
+
+                <div class="tabs-container">
+                    <div id="coffee" class="menu-items-grid tab-content active-content"></div>
+                    <div id="snacks" class="menu-items-grid tab-content"></div>
+                    <div id="own" class="menu-items-grid tab-content"></div>
+                    <div id="desserts" class="menu-items-grid tab-content"></div>
+                    <div id="healthy" class="menu-items-grid tab-content"></div>
+                    <div id="bakery" class="menu-items-grid tab-content"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <a href="index.html" class="logo"><img src="img/logo.png" alt="ByteBar Logo" class="logo-img"> ByteBar</a>
+            <p class="footer-subtitle">Міні-маркет готової їжі & Комфортний IT-Hub</p>
+            <p class="copyright">&copy; 2025 ByteBar. Всі права захищені.</p>
+            <p class="made-in">Зроблено з <i class="fa-solid fa-heart" style="color: #e25555;"></i> в Україні</p>
+        </div>
+    </footer>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            
+            <div class="modal-header">
+                <h3 id="modalTitle">Назва товару</h3>
+                <span class="close-btn">&times;</span>
+            </div>
+
+            <div class="modal-body">
+                
+                <img id="modalImg" src="" alt="Product Image" class="modal-main-img">
+                
+                <p id="modalDesc" class="modal-description">Опис товару...</p>
+
+                <div class="nutrition-box">
+                    <h4>Поживна цінність (на 100г)</h4>
+                    
+                    <div class="nutrition-row">
+                        <span>Енергетична цінність</span>
+                        <span class="nutrition-val">
+                            <span id="modalCalories">0 ккал</span>
+                        </span>
+                    </div>
+                    
+                    <div class="nutrition-row">
+                        <span>Білки</span>
+                        <span class="nutrition-val" id="modalProtein">0 г</span>
+                    </div>
+                    
+                    <div class="nutrition-row">
+                        <span>Вуглеводи</span>
+                        <span class="nutrition-val" id="modalCarbs">0 г</span>
+                    </div>
+                    
+                    <div class="nutrition-row">
+                        <span>Жири</span>
+                        <span class="nutrition-val" id="modalFats">0 г</span>
+                    </div>
+
+                    <div class="nutrition-row">
+                        <span>Клітковина</span>
+                        <span class="nutrition-val" id="modalFiber">0 г</span>
+                    </div>
+
+                    <div class="nutrition-row last-row">
+                        <span>Сіль</span>
+                        <span class="nutrition-val" id="modalSalt">0 г</span>
+                    </div>
+                </div>
+
+                <div class="ingredients-section">
+                    <h4>Склад</h4>
+                    <p id="modalIngredients">Склад не вказано</p>
+                </div>
+
+                <div class="allergens-box">
+                    <h4>Алергени</h4>
+                    <p id="modalAllergens">Немає</p>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <script src="js/menuData.js"></script>
+    <script src="js/renderMenu.js"></script>
+    <script src="js/modal.js"></script>
+
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ByteBar</title>
+    <title>ByteBar - Головна</title>
     <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,17 +53,17 @@
                 <h2>Наша концепція та переваги</h2>
                 <div class="features-grid">
                     <div class="feature-card">
-                        <img src="{{ asset('img/App/App1.png') }}"></img>
+                        <img src="{{ asset('img/App/App1.png') }}" alt="Простір">
                         <h3>Сучасний простір</h3>
                         <p>Комфортний коворкінг з високошвидкісним інтернетом, зручними робочими місцями та атмосферою для продуктивної роботи</p>
                     </div>
                     <div class="feature-card">
-                        <img src="{{ asset('img/App/App2.png') }}"></img>
+                        <img src="{{ asset('img/App/App2.png') }}" alt="Їжа">
                         <h3>Свіжа готова їжа</h3>
                         <p>Широкий асортимент свіжих страв власного виробництва, здорові снеки та напої преміум-якості</p>
                     </div>
                     <div class="feature-card">
-                        <img src="{{ asset('img/App/App3.png') }}"></img>
+                        <img src="{{ asset('img/App/App3.png') }}" alt="Проєкт">
                         <h3>Український проєкт</h3>
                         <p>Гордо підтримуємо локальних виробників та розвиваємо ІТ-екосистему України</p>
                     </div>
@@ -84,30 +84,30 @@
                 <h2>Досліджуйте наше меню</h2>
                 
                 <div class="menu-categories">
-                    <a href="{{ url('/coffee') }}" class="category-item">
+                    <a href="{{ url('/coffee') }}#coffee" class="category-item">
                         <img src="{{ asset('img/Icon/Icon_1.png') }}" alt="Кава">
                         <p>Кава</p>
                     </a>
-                    <div class="category-item">
+                    <a href="{{ url('/coffee') }}#snacks" class="category-item">
                         <img src="{{ asset('img/Icon/Icon_2.png') }}" alt="Снеки">
                         <p>Снеки</p>
-                    </div>
-                    <div class="category-item">
+                    </a>
+                    <a href="{{ url('/coffee') }}#own" class="category-item">
                         <img src="{{ asset('img/Icon/Icon_3.png') }}" alt="Власне виробництво">
                         <p>Власне виробництво</p>
-                    </div>
-                    <div class="category-item">
+                    </a>
+                    <a href="{{ url('/coffee') }}#desserts" class="category-item">
                         <img src="{{ asset('img/Icon/Icon_4.png') }}" alt="Десерти">
                         <p>Десерти</p>
-                    </div>
-                    <div class="category-item">
+                    </a>
+                    <a href="{{ url('/coffee') }}#healthy" class="category-item">
                         <img src="{{ asset('img/Icon/Icon_5.png') }}" alt="Здорове харчування">
                         <p>Здорове харчування</p>
-                    </div>
-                    <div class="category-item">
+                    </a>
+                    <a href="{{ url('/coffee') }}#bakery" class="category-item">
                         <img src="{{ asset('img/Icon/Icon_6.png') }}" alt="Випічка">
                         <p>Випічка</p>
-                    </div>
+                    </a>
                 </div>
 
                 <h3 class="subsection-title">Ключові позиції</h3>
@@ -144,125 +144,56 @@
                 <div class="location-content">
                     
                     <div class="location-slider-column">
-                        
                         <div class="location-slider-container">
                             <div class="location-slide active-slide" data-location="techpark">
                                 <div class="location-header">
-                                    <h3>ByteBar - TechPark</h3>
-                                    <p class="distance">0.5 км</p>
+                                    <h3>ByteBar</h3>
                                 </div>
                                 <div class="info-item">
                                     <img src="{{ asset('img/Contacts/Address.png') }}" alt="Адреса">
                                     <div>
                                         <strong>Адреса</strong>
-                                        <p>вул. Сагайдачного 12, Київ, 04070<br>Комплекс "Поділ-Плаза", 1-й поверх</p>
+                                        <p>м.Київ, вул. Д. Дорошенка, 57а</p>
                                     </div>
                                 </div>
                                 <div class="info-item">
                                     <img src="{{ asset('img/Contacts/Phone.png') }}" alt="Телефон">
                                     <div>
                                         <strong>Телефон</strong>
-                                        <p>+380 44 123 45 69</p>
+                                        <p>+380 (044) 531-31-68</p>
                                     </div>
                                 </div>
                                 <div class="info-item">
                                     <img src="{{ asset('img/Contacts/Mode.png') }}" alt="Режим роботи">
                                     <div>
                                         <strong>Режим роботи</strong>
-                                        <p>Пн-Пт: 07:30 - 23:00, Сб-Нд: 09:00 - 22:00</p>
+                                        <p>Пн-Пт: 08:00 - 22:00, Сб-Нд: 09:00 - 21:00</p>
                                     </div>
                                 </div>
                                 <div class="action-buttons">
-                                    <a href="#" class="btn btn-primary map-btn">
+                                    <a href="https://maps.google.com/?q=вул.+Дмитра+Дорошенка,+57а,+Київ" target="_blank" class="btn btn-primary map-btn">
                                         <i class="fa-solid fa-route"></i> &ensp;Маршрут
                                     </a>
                                     <a href="#" class="btn btn-outline detail-btn">Подробиці</a>
                                 </div>
                             </div>
-                            
-                            <div class="location-slide" data-location="center">
-                                <div class="location-header">
-                                    <h3>ByteBar - Центр</h3>
-                                    <p class="distance">1.2 км</p>
-                                </div>
-                                <div class="info-item">
-                                    <img src="{{ asset('img/Contacts/Address.png') }}" alt="Адреса">
-                                    <div>
-                                        <strong>Адреса</strong>
-                                        <p>вул. Сагайдачного 12, Київ, 04070<br>Комплекс "Поділ-Плаза", 1-й поверх</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <img src="{{ asset('img/Contacts/Phone.png') }}" alt="Телефон">
-                                    <div>
-                                        <strong>Телефон</strong>
-                                        <p>+380 44 123 45 69</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <img src="{{ asset('img/Contacts/Mode.png') }}" alt="Режим роботи">
-                                    <div>
-                                        <strong>Режим роботи</strong>
-                                        <p>Пн-Пт: 07:30 - 23:00, Сб-Нд: 09:00 - 22:00</p>
-                                    </div>
-                                </div>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn btn-primary map-btn">
-                                        <i class="fa-solid fa-route"></i> &ensp;Маршрут
-                                    </a>
-                                    <a href="#" class="btn btn-outline detail-btn">Подробиці</a>
-                                </div>
-                            </div>
-
-                            <div class="location-slide" data-location="podil">
-                                <div class="location-header">
-                                    <h3>ByteBar - Поділ</h3>
-                                    <p class="distance">2.3 км</p>
-                                </div>
-                                <div class="info-item">
-                                    <img src="{{ asset('img/Contacts/Address.png') }}" alt="Адреса">
-                                    <div>
-                                        <strong>Адреса</strong>
-                                        <p>вул. Сагайдачного 12, Київ, 04070<br>Комплекс "Поділ-Плаза", 1-й поверх</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <img src="{{ asset('img/Contacts/Phone.png') }}" alt="Телефон">
-                                    <div>
-                                        <strong>Телефон</strong>
-                                        <p>+380 44 123 45 69</p>
-                                    </div>
-                                </div>
-                                <div class="info-item">
-                                    <img src="{{ asset('img/Contacts/Mode.png') }}" alt="Режим роботи">
-                                    <div>
-                                        <strong>Режим роботи</strong>
-                                        <p>Пн-Пт: 07:30 - 23:00, Сб-Нд: 09:00 - 22:00</p>
-                                    </div>
-                                </div>
-                                <div class="action-buttons">
-                                    <a href="#" class="btn btn-primary map-btn">
-                                        <i class="fa-solid fa-route"></i> &ensp;Маршрут
-                                    </a>
-                                    <a href="#" class="btn btn-outline detail-btn">Подробиці</a>
-                                </div>
-                            </div>
-
-                        </div> <button class="slider-btn prev-btn"><i class="fa-solid fa-chevron-left"></i></button>
-                        <button class="slider-btn next-btn"><i class="fa-solid fa-chevron-right"></i></button>
-
-                        <div class="slider-dots">
-                            <span class="dot active-dot" data-index="0"></span>
-                            <span class="dot" data-index="1"></span>
-                            <span class="dot" data-index="2"></span>
-                        </div>
-
-                    </div> <div class="map-placeholder">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                        <p>Інтерактивна карта Google Maps</p>
+                        </div> 
+                    </div> 
+                    
+                    <div class="map-container" style="height: 540px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2540.665792949791!2d30.5053075!3d50.4472851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4ce5e933682fd%3A0xb71a8bc8fec2db9a!2sVul.%20Dmytra%20Doroshenka%2C%2057%D0%B0%2C%20Kyiv%2C%20Ukraine%2C%2002000!5e0!3m2!1sen!2sus!4v1715000000000!5m2!1sen!2sus" 
+                            width="100%" 
+                            height="100%" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
 
-                </div> </div>
+                </div> 
+            </div>
         </section>
 
         <section id="news">
@@ -333,8 +264,6 @@
             <p class="made-in">Зроблено з <i class="fa-solid fa-heart" style="color: #e25555;"></i> в Україні</p>
         </div>
     </footer>
-
-    <script src="{{ asset('js/slider.js') }}"></script>
 
 </body>
 </html>

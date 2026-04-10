@@ -1,11 +1,3 @@
-# ============================================================
-#  db-import.ps1 — Імпорт дампу MySQL в Docker-контейнер
-# ============================================================
-# Використання:
-#   .\scripts\db-import.ps1                        <- бере останній дамп автоматично
-#   .\scripts\db-import.ps1 .\dumps\dump_xyz.sql   <- вказати конкретний файл
-# ============================================================
-
 param(
     [string]$DumpFile = ""
 )
@@ -16,43 +8,37 @@ $dbUser     = "laravel_user"
 $dbPassword = "secret_password"
 $dumpDir    = "$PSScriptRoot\..\dumps"
 
-# Якщо файл не вказано — беремо останній дамп з папки dumps/
 if (-not $DumpFile) {
     $latest = Get-ChildItem -Path $dumpDir -Filter "*.sql" |
               Sort-Object LastWriteTime -Descending |
               Select-Object -First 1
 
     if (-not $latest) {
-        Write-Host "❌ Не знайдено жодного .sql файлу в папці: $dumpDir"
+        Write-Host "ERROR: No .sql files found in: $dumpDir"
         exit 1
     }
 
     $DumpFile = $latest.FullName
 }
 
-# Перевірка що файл існує
 if (-not (Test-Path $DumpFile)) {
-    Write-Host "❌ Файл не знайдено: $DumpFile"
+    Write-Host "ERROR: File not found: $DumpFile"
     exit 1
 }
 
 $filename = Split-Path $DumpFile -Leaf
-Write-Host ""
-Write-Host "📄 Файл дампу : $filename"
-Write-Host "🗄️  База даних : $dbName"
+Write-Host "Dump file  : $filename"
+Write-Host "Database   : $dbName"
 Write-Host ""
 
-# Підтвердження від користувача
-$confirm = Read-Host "⚠️  Це ПЕРЕЗАПИШЕ поточну базу '$dbName'. Продовжити? (y/n)"
+$confirm = Read-Host "WARNING: This will OVERWRITE the current '$dbName' database. Continue? (y/n)"
 if ($confirm -ne 'y') {
-    Write-Host "❌ Імпорт скасовано."
+    Write-Host "Import cancelled."
     exit 0
 }
 
-Write-Host ""
-Write-Host "⏳ Імпортую дамп в контейнер '$container'..."
+Write-Host "Importing dump into container '$container'..."
 
-# Передаємо файл через pipe в mysql всередині контейнера
 Get-Content $DumpFile -Raw | docker exec -i $container `
     mysql `
     --user=$dbUser `
@@ -60,11 +46,9 @@ Get-Content $DumpFile -Raw | docker exec -i $container `
     $dbName
 
 if ($LASTEXITCODE -eq 0) {
-    Write-Host ""
-    Write-Host "✅ Імпорт успішно завершено!"
-    Write-Host "📄 Відновлено з: $filename"
+    Write-Host "SUCCESS: Import completed!"
+    Write-Host "Restored from: $filename"
 } else {
-    Write-Host ""
-    Write-Host "❌ Помилка під час імпорту!"
+    Write-Host "ERROR: Import failed!"
     exit 1
 }

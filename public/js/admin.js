@@ -228,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'X-CSRF-TOKEN': csrfToken,
                 'Accept': 'application/json'
             },
+            credentials: 'same-origin',
             body: formData
         });
         const json = await res.json();
@@ -475,7 +476,6 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (isUpdate) {
             endpoint += `/${window.currentEditId}`;
-            formData.append('_method', 'PUT'); // Fake PUT for Laravel to parse files correctly
         }
 
         try {
@@ -540,6 +540,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } else if (type === 'categories') {
                 formData.append('name', inputs[0].value);
+                if (fileInput && fileInput.files[0]) {
+                    formData.append('image', fileInput.files[0]);
+                }
             }
             
             await submitFormData(endpoint, formData);

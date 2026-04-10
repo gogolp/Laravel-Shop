@@ -215,34 +215,8 @@
         <section id="news">
             <div class="container">
                 <h2>Останні новини та події хабу</h2>
-                <div class="news-grid">
-                    <div class="news-card">
-                        <img src="{{ asset('img/Photo/Photo_5.png') }}" alt="Сири">
-                        <div class="news-card-content">
-                            <span class="date">15 Листопада 2025</span>
-                            <h4>15% знижка на всі сири у п'ятницю</h4>
-                            <p>Святкуємо місяць крафтового сиру! Спробуйте найкращі локальні сири зі знижкою.</p>
-                            <a href="#" class="btn btn-outline">Детальніше</a>
-                        </div>
-                    </div>
-                    <div class="news-card">
-                        <img src="{{ asset('img/Photo/Photo_4.png') }}" alt="Настільні ігри">
-                        <div class="news-card-content">
-                            <span class="date">20 Листопада 2025</span>
-                            <h4>Вечір настільних ігор</h4>
-                            <p>Запрошуємо всіх на вечір спілкування та настільних ігор. Старт о 18:00.</p>
-                            <a href="#" class="btn btn-outline">Детальніше</a>
-                        </div>
-                    </div>
-                    <div class="news-card">
-                        <img src="{{ asset('img/Photo/Photo_6.png') }}" alt="Осіннє меню">
-                        <div class="news-card-content">
-                            <span class="date">25 Жовтня 2025</span>
-                            <h4>Нове осіннє меню вже доступне</h4>
-                            <p>Гарбузовий латте, теплі салати та супи - зустрічайте осінь смачно!</p>
-                            <a href="#" class="btn btn-outline">Детальніше</a>
-                        </div>
-                    </div>
+                <div class="news-grid" id="newsGrid">
+                    <!-- News cards will be dynamically loaded here via API -->
                 </div>
             </div>
         </section>
@@ -281,5 +255,58 @@
         </div>
     </footer>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('/api/news-feed')
+                .then(response => response.json())
+                .then(result => {
+                    const newsGrid = document.getElementById('newsGrid');
+                    if (result && result.data && result.data.length > 0) {
+                        newsGrid.innerHTML = '';
+                        
+                        // 1. Копіюємо всі новини та перемішуємо за надійним алгоритмом (Fisher-Yates)
+                        let shuffledNews = [...result.data];
+                        for (let i = shuffledNews.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [shuffledNews[i], shuffledNews[j]] = [shuffledNews[j], shuffledNews[i]];
+                        }
+                        
+                        // 2. Беремо 3 випадкові новини
+                        let newsItems = shuffledNews.slice(0, 3);
+                        
+                        // 3. Сортуємо їх за датою від найстарішої до найсвіжішої (щоб старіші завжди були зліва)
+                        newsItems.sort((a, b) => {
+                            const parseDate = str => {
+                                const [day, month, year] = str.split('.');
+                                return new Date(year, month - 1, day);
+                            };
+                            return parseDate(a.created_at) - parseDate(b.created_at);
+                        });
+                        
+                        newsItems.forEach(news => {
+                            const imgUrl = news.image_url ? news.image_url : '{{ asset("img/Photo/Photo_5.png") }}';
+                            const card = `
+                                <div class="news-card">
+                                    <img src="${imgUrl}" alt="${news.title}">
+                                    <div class="news-card-content">
+                                        <span class="date">${news.created_at}</span>
+                                        <h4>${news.title}</h4>
+                                        <p>${news.description}</p>
+                                        <a href="#" class="btn btn-outline">Детальніше</a>
+                                    </div>
+                                </div>
+                            `;
+                            newsGrid.insertAdjacentHTML('beforeend', card);
+                        });
+                    } else {
+                        newsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Немає останніх новин.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching news:', error);
+                    document.getElementById('newsGrid').innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Помилка завантаження новин.</p>';
+                });
+        });
+    </script>
 </body>
 </html>

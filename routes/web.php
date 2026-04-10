@@ -51,3 +51,5 @@ Route::middleware('auth')->group(function () {
         Route::delete('/promos/{id}', [AdminApiController::class, 'destroyPromotion']);
     });
 });
+
+

@@ -3,6 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ByteBar - Кава та Меню</title>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="Дослідіть меню ByteBar: від класичної арабіки до десертів та здорового харчування. Якісні продукти власного виробництва.">
+    <meta name="keywords" content="ByteBar, меню, кава, арабіка, капучино, десерти, Київ, готова їжа">
+    <meta name="author" content="ByteBar">
+
+    <!-- Open Graph (Facebook, Telegram, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/coffee') }}">
+    <meta property="og:title" content="Меню ByteBar - Найкраща кава та снеки">
+    <meta property="og:description" content="Дослідіть меню ByteBar: від класичної арабіки до десертів та здорового харчування.">
+    <meta property="og:image" content="{{ asset('img/logo.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url('/coffee') }}">
+    <meta property="twitter:title" content="Меню ByteBar - Найкраща кава та снеки">
+    <meta property="twitter:description" content="Дослідіть меню ByteBar: від класичної арабіки до десертів та здорового харчування.">
+    <meta property="twitter:image" content="{{ asset('img/logo.png') }}">
+    
     <title>ByteBar - Меню</title>
     <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -10,6 +31,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google tag (gtag.js) GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9VSR1XK6R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-W9VSR1XK6R');
+    </script>
 </head>
 <body>
 

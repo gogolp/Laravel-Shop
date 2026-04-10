@@ -230,6 +230,16 @@
                                 <label>Назва категорії *</label>
                                 <input type="text" placeholder="Введіть назву категорії" required>
                             </div>
+                            <div class="form-group">
+                                <label>Іконка категорії</label>
+                                <label class="btn-upload">
+                                    <i class="fa-solid fa-image"></i> Обрати іконку
+                                    <input type="file" accept="image/*" class="file-input" style="display:none;">
+                                </label>
+                                <div class="image-preview-container" style="margin-top: 10px;">
+                                    <img class="img-preview" src="" style="display: none; height: 80px; object-fit: cover; border-radius: 8px;">
+                                </div>
+                            </div>
                             <div class="form-actions-footer">
                                 <button type="submit" class="btn btn-primary btn-save">
                                     <i class="fa-regular fa-floppy-disk"></i> Зберегти

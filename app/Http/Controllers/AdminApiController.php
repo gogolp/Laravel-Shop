@@ -28,8 +28,14 @@ class AdminApiController extends Controller
     public function storeCategory(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255'
+            'name'  => 'required|string|max:255',
+            'image' => 'nullable|image|max:5120',
         ]);
+        $this->handleImageUpload($request, $validated);
+        if (isset($validated['image_url'])) {
+            $validated['icon_path'] = $validated['image_url'];
+            unset($validated['image_url']);
+        }
         $category = Category::create($validated);
         return response()->json($category, 201);
     }
@@ -38,8 +44,14 @@ class AdminApiController extends Controller
     {
         $category = Category::findOrFail($id);
         $validated = $request->validate([
-            'name' => 'required|string|max:255'
+            'name'  => 'required|string|max:255',
+            'image' => 'nullable|image|max:5120',
         ]);
+        $this->handleImageUpload($request, $validated);
+        if (isset($validated['image_url'])) {
+            $validated['icon_path'] = $validated['image_url'];
+            unset($validated['image_url']);
+        }
         $category->update($validated);
         return response()->json($category);
     }

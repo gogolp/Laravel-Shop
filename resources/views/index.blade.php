@@ -19,7 +19,11 @@
                 <img src="{{ asset('img/logo.png') }}" alt="ByteBar Logo" class="logo-img"> ByteBar
             </a>
             
-            <div class="nav-group">
+            <button class="burger-menu-btn" id="burgerBtn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <div class="nav-group" id="navGroup">
                 <nav>
                     <ul>
                         <li><a href="#about">Про нас</a></li>
@@ -48,7 +52,7 @@
             <img src="{{ asset('img/Strip/bottom_strip.png') }}" class="hero-strip bottom-strip" alt="decorative strip">
         </section>
 
-        <section id="features">
+        <section id="about">
             <div class="container">
                 <h2>Наша концепція та переваги</h2>
                 <div class="features-grid">
@@ -98,57 +102,15 @@
         <section id="menu">
             <div class="container">
                 <h2>Досліджуйте наше меню</h2>
-                
-                <div class="menu-categories">
-                    <a href="{{ url('/coffee') }}#coffee" class="category-item">
-                        <img src="{{ asset('img/Icon/Icon_1.png') }}" alt="Кава">
-                        <p>Кава</p>
-                    </a>
-                    <a href="{{ url('/coffee') }}#snacks" class="category-item">
-                        <img src="{{ asset('img/Icon/Icon_2.png') }}" alt="Снеки">
-                        <p>Снеки</p>
-                    </a>
-                    <a href="{{ url('/coffee') }}#own" class="category-item">
-                        <img src="{{ asset('img/Icon/Icon_3.png') }}" alt="Власне виробництво">
-                        <p>Власне виробництво</p>
-                    </a>
-                    <a href="{{ url('/coffee') }}#desserts" class="category-item">
-                        <img src="{{ asset('img/Icon/Icon_4.png') }}" alt="Десерти">
-                        <p>Десерти</p>
-                    </a>
-                    <a href="{{ url('/coffee') }}#healthy" class="category-item">
-                        <img src="{{ asset('img/Icon/Icon_5.png') }}" alt="Здорове харчування">
-                        <p>Здорове харчування</p>
-                    </a>
-                    <a href="{{ url('/coffee') }}#bakery" class="category-item">
-                        <img src="{{ asset('img/Icon/Icon_6.png') }}" alt="Випічка">
-                        <p>Випічка</p>
-                    </a>
+
+                <div class="menu-categories" id="menu-categories-list">
+                    {{-- Динамічно підтягується з /api/categories --}}
+                    <div class="menu-categories-skeleton">Завантаження...</div>
                 </div>
 
                 <h3 class="subsection-title">Ключові позиції</h3>
-                <div class="menu-highlights">
-                    <div class="menu-card">
-                        <img src="{{ asset('img/Photo/Photo_1.png') }}" alt="Сендвіч">
-                        <div class="menu-card-content">
-                            <h4>Сендвіч дня</h4>
-                            <p>Свіжий багет з авокадо, лососем та сирним кремом</p>
-                        </div>
-                    </div>
-                    <div class="menu-card">
-                        <img src="{{ asset('img/Photo/Photo_2.png') }}" alt="Капучино">
-                        <div class="menu-card-content">
-                            <h4>Фірмовий капучино</h4>
-                            <p>100% арабіка з Колумбії, молоко на вибір</p>
-                        </div>
-                    </div>
-                    <div class="menu-card">
-                        <img src="{{ asset('img/Photo/Photo_3.png') }}" alt="Випічка">
-                        <div class="menu-card-content">
-                            <h4>Домашня випічка</h4>
-                            <p>Круасани, чізкейки та тістечка власного виробництва</p>
-                        </div>
-                    </div>
+                <div class="menu-highlights" id="menu-highlights-list">
+                    {{-- Динамічно підтягується з /api/catalog/products?tag=Топ продажів --}}
                 </div>
             </div>
         </section>
@@ -251,20 +213,21 @@
             <div class="container">
                 <h2>Ваш відгук важливий</h2>
                 <p class="feedback-subtitle">Поділіться вашими думками, пропозиціями або побажаннями</p>
-                <form>
+                <div id="feedback-msg" style="display:none;"></div>
+                <form id="feedback-form">
                     <div class="form-group">
-                        <label for="name">Ім'я (необов'язково)</label>
-                        <input type="text" id="name" placeholder="Ваше ім'я">
+                        <label for="feedback-name">Ім'я (необов'язково)</label>
+                        <input type="text" id="feedback-name" name="name" placeholder="Ваше ім'я">
                     </div>
                     <div class="form-group">
-                        <label for="email">Email (необов'язково)</label>
-                        <input type="email" id="email" placeholder="your@email.com">
+                        <label for="feedback-email">Email (необов'язково)</label>
+                        <input type="email" id="feedback-email" name="email" placeholder="your@email.com">
                     </div>
                     <div class="form-group">
-                        <label for="message">Повідомлення *</label>
-                        <textarea id="message" rows="5" placeholder="Ваш відгук або пропозиція..." required></textarea>
+                        <label for="feedback-message">Повідомлення *</label>
+                        <textarea id="feedback-message" name="message" rows="5" placeholder="Ваш відгук або пропозиція..." required></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-full">
+                    <button type="submit" id="feedback-submit" class="btn btn-primary btn-full">
                         <i class="fa-solid fa-paper-plane"></i> Надіслати пропозицію
                     </button>
                 </form>
@@ -281,5 +244,6 @@
         </div>
     </footer>
 
+    <script src="{{ asset('js/main.js') }}?v={{ time() }}"></script>
 </body>
 </html>

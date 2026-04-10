@@ -4,12 +4,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ByteBar - Головна</title>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="ByteBar - Міні-маркет готової їжі та комфортний IT-Hub. Свіжа їжа, преміальна кава та ідеальний простір для роботи в Києві.">
+    <meta name="keywords" content="ByteBar, IT-Hub, кафе, коворкінг, готова їжа, кава, Київ">
+    <meta name="author" content="ByteBar">
+
+    <!-- Open Graph (Facebook, Telegram, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:title" content="ByteBar - Ваш щоденний апгрейд">
+    <meta property="og:description" content="Зручний міні-маркет готової їжі та IT-Hub. Завантажуй додаток та отримуй бонуси!">
+    <meta property="og:image" content="{{ asset('img/logo.png') }}">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url('/') }}">
+    <meta property="twitter:title" content="ByteBar - Ваш щоденний апгрейд">
+    <meta property="twitter:description" content="Зручний міні-маркет готової їжі та IT-Hub. Завантажуй додаток та отримуй бонуси!">
+    <meta property="twitter:image" content="{{ asset('img/logo.png') }}">
+    
+    <!-- Browser Customization -->
+    <meta name="theme-color" content="#1a202c">
+    <link rel="apple-touch-icon" href="{{ asset('img/logo.png') }}">
     <link rel="icon" href="{{ asset('img/logo.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google tag (gtag.js) GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9VSR1XK6R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-W9VSR1XK6R');
+    </script>
+
+    <!-- Schema.org / Google Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "CafeOrCoffeeShop",
+      "name": "ByteBar",
+      "image": "{{ asset('img/logo.png') }}",
+      "@@id": "{{ url('/') }}",
+      "url": "{{ url('/') }}",
+      "telephone": "+380440000000",
+      "address": {
+        "@@type": "PostalAddress",
+        "streetAddress": "вул. Дмитра Дорошенка, 57а",
+        "addressLocality": "Київ",
+        "addressCountry": "UA"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday", "Tuesday", "Wednesday",
+          "Thursday", "Friday", "Saturday", "Sunday"
+        ],
+        "opens": "08:00",
+        "closes": "22:00"
+      }
+    }
+    </script>
 </head>
 <body>
 
@@ -77,14 +138,14 @@
                 <h3>Завантажуй додаток та отримуй унікальні знижки за айтішки</h3>
                 <p>Просто скануйте свій QR-код при покупках та отримуйте знижки і спеціальні пропозиції</p>
                 <div class="cta-store-buttons">
-                    <a href="https://play.google.com/store" target="_blank" class="btn-store">
+                    <a href="https://play.google.com/store" target="_blank" class="btn-store" onclick="gtag('event', 'download_app_click', { 'platform': 'Android' });">
                         <i class="fa-brands fa-google-play"></i>
                         <div>
                             <span class="btn-store-sub">Завантажити в</span>
                             <span class="btn-store-main">Google Play</span>
                         </div>
                     </a>
-                    <a href="https://www.apple.com/app-store/" target="_blank" class="btn-store">
+                    <a href="https://www.apple.com/app-store/" target="_blank" class="btn-store" onclick="gtag('event', 'download_app_click', { 'platform': 'iOS' });">
                         <i class="fa-brands fa-apple"></i>
                         <div>
                             <span class="btn-store-sub">Завантажити в</span>

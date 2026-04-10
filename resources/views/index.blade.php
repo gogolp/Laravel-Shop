@@ -198,7 +198,7 @@
                     
                     <div class="map-container" style="height: 540px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);">
                         <iframe 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2540.665792949791!2d30.5053075!3d50.4472851!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40d4ce5e933682fd%3A0xb71a8bc8fec2db9a!2sVul.%20Dmytra%20Doroshenka%2C%2057%D0%B0%2C%20Kyiv%2C%20Ukraine%2C%2002000!5e0!3m2!1sen!2sus!4v1715000000000!5m2!1sen!2sus" 
+                            src="https://maps.google.com/maps?q=м.Київ,%20вул.%20Дмитра%20Дорошенка,%2057а&t=&z=16&ie=UTF8&iwloc=&output=embed" 
                             width="100%" 
                             height="100%" 
                             style="border:0;" 

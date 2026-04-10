@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\FeedbackController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\LoyaltyController;
 use App\Http\Controllers\Api\NewsFeedController;
@@ -29,6 +30,8 @@ Route::get('news-feed/{id}', [NewsFeedController::class, 'show']);
 
 Route::get('locations', [LocationController::class, 'index']);
 Route::get('locations/{id}', [LocationController::class, 'show']);
+
+Route::post('feedback', [FeedbackController::class, 'store']);
 
 // З авторизацією
 Route::middleware('auth:sanctum')->group(function () {

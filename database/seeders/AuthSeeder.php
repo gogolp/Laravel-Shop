@@ -13,8 +13,9 @@ class AuthSeeder extends Seeder
         User::firstOrCreate(
             ['email' => 'admin@bytebar.com'],
             [
-                'name' => 'Admin',
-                'password' => Hash::make('password')
+                'name'     => 'Admin',
+                'password' => Hash::make('password'),
+                'role'     => 'admin',
             ]
         );
     }

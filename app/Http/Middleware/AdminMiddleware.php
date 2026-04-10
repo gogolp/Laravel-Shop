@@ -17,9 +17,13 @@ class AdminMiddleware
     {
         $user = $request->user();
 
-        if (!$user->isAdmin()) {
-            return response()->json(['message' => 'Forbidden'], 403);
+        if (!$user || !$user->isAdmin()) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Forbidden'], 403);
+            }
+            return redirect()->route('login')->withErrors(['email' => 'Доступ заборонено.']);
         }
+
         return $next($request);
     }
 }

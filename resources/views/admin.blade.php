@@ -30,6 +30,7 @@
                     <li><a href="#" class="admin-nav-link active-link" data-target="menu">Меню</a></li>
                     <li><a href="#" class="admin-nav-link" data-target="categories">Категорії товарів</a></li>
                     <li><a href="#" class="admin-nav-link" data-target="promo">Акції та знижки</a></li>
+                    <li><a href="#" class="admin-nav-link" data-target="feedbacks">Відгуки</a></li>
                 </ul>
             </nav>
         </aside>
@@ -308,6 +309,15 @@
                             </div>
                         </form>
                     </div>
+                </div>
+            </section>
+
+            <section id="feedbacks" class="admin-section">
+                <div class="view-list">
+                    <div class="section-header">
+                        <h2>Відгуки користувачів</h2>
+                    </div>
+                    <div id="feedbacks-list"></div>
                 </div>
             </section>
 

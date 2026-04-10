@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         menu: [],
         news: [],
         promos: [],
-        categories: []
+        categories: [],
+        feedbacks: []
     };
     window.currentEditId = null;
     window.currentEditType = null;
@@ -212,6 +213,14 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSectionToggle('news');
     setupSectionToggle('promo');
     setupSectionToggle('categories');
+
+    // --- Helpers ---
+    function formatDate(dateStr) {
+        if (!dateStr) return null;
+        const d = new Date(dateStr);
+        if (isNaN(d)) return dateStr;
+        return d.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
 
     // --- Data Fetching & Rendering ---
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -401,7 +410,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <span class="row-category">${item.type}</span>
                             <p>${item.description || ''}</p>
-                            <div class="row-meta"><small>${item.start_date ? 'З ' + item.start_date : ''} ${item.end_date ? 'по ' + item.end_date : ''}</small></div>
+                            <div class="row-meta"><small>${item.start_date ? 'З ' + formatDate(item.start_date) : ''} ${item.end_date ? 'по ' + formatDate(item.end_date) : ''}</small></div>
                         </div>
                         <div class="row-actions">
                             <button class="btn-icon edit" onclick="editItem('news', ${item.id})"><i class="fa-solid fa-pen"></i></button>
@@ -435,7 +444,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <p>${item.description || ''}</p>
                             <div class="promo-details">
-                                <span class="promo-date">Діє до: ${item.valid_until || 'Постійно'}</span>
+                                <span class="promo-date">Діє до: ${formatDate(item.valid_until) || 'Постійно'}</span>
                             </div>
                         </div>
                         <div class="row-actions-promo">
@@ -463,6 +472,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 `;
             });
+        } else if (type === 'feedbacks') {
+            const items = await fetchData('/api/admin/feedbacks');
+            window.appData.feedbacks = items;
+            const container = document.getElementById('feedbacks-list');
+            if (!items.length) {
+                container.innerHTML = '<p style="text-align:center;color:#888;padding:32px;">Відгуків ще немає.</p>';
+                return;
+            }
+            container.innerHTML = `
+                <table style="width:100%;border-collapse:collapse;font-size:14px;">
+                    <thead>
+                        <tr style="background:#f1f5f9;text-align:left;">
+                            <th style="padding:12px 16px;border-bottom:1px solid #e2e8f0;">Дата</th>
+                            <th style="padding:12px 16px;border-bottom:1px solid #e2e8f0;">Ім'я</th>
+                            <th style="padding:12px 16px;border-bottom:1px solid #e2e8f0;">Email</th>
+                            <th style="padding:12px 16px;border-bottom:1px solid #e2e8f0;">Повідомлення</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${items.map(f => `
+                            <tr style="border-bottom:1px solid #f1f5f9;">
+                                <td style="padding:12px 16px;white-space:nowrap;color:#64748b;">${new Date(f.created_at).toLocaleString('uk-UA')}</td>
+                                <td style="padding:12px 16px;font-weight:500;">${f.name || '<span style="color:#aaa">—</span>'}</td>
+                                <td style="padding:12px 16px;color:#3b82f6;">${f.email ? `<a href="mailto:${f.email}" style="color:#3b82f6;">${f.email}</a>` : '<span style="color:#aaa">—</span>'}</td>
+                                <td style="padding:12px 16px;">${f.message}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
         }
     }
 

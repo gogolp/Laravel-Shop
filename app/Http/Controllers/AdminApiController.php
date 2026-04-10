@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Category;
+use App\Models\Feedback;
 use App\Models\Product;
 use App\Models\NewsFeed;
 use App\Models\Promotion;
@@ -17,6 +18,14 @@ class AdminApiController extends Controller
             $path = $request->file('image')->store('uploads', 'public');
             $validated['image_url'] = '/storage/' . $path;
         }
+    }
+
+    // === FEEDBACKS ===
+    public function getFeedbacks()
+    {
+        return response()->json(
+            Feedback::orderBy('created_at', 'desc')->get()
+        );
     }
 
     // === CATEGORIES ===

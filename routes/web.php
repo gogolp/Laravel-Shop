@@ -5,10 +5,9 @@ use App\Http\Controllers\AdminApiController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\PublicApiController;
 
-// Public API Routes
+// Public API Routes (GET only — POST /api/feedback is handled by api.php without CSRF)
 Route::get('/api/categories', [PublicApiController::class, 'getCategories']);
 Route::get('/api/catalog/products', [PublicApiController::class, 'getProducts']);
-Route::post('/api/feedback', [PublicApiController::class, 'storeFeedback']);
 
 Route::get('/', function () {
     return view('index');
@@ -34,6 +33,8 @@ Route::middleware(['auth', 'is_admin'])->group(function () {
         Route::post('/categories', [AdminApiController::class, 'storeCategory']);
         Route::match(['PUT', 'POST'], '/categories/{id}', [AdminApiController::class, 'updateCategory']);
         Route::delete('/categories/{id}', [AdminApiController::class, 'destroyCategory']);
+
+        Route::get('/feedbacks', [AdminApiController::class, 'getFeedbacks']);
 
         Route::get('/menu', [AdminApiController::class, 'getProducts']);
         Route::post('/menu', [AdminApiController::class, 'storeProduct']);

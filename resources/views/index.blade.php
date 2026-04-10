@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>ByteBar - Головна</title>
     
     <!-- SEO & Meta Tags -->
@@ -281,55 +282,70 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('/api/news-feed')
-                .then(response => response.json())
-                .then(result => {
-                    const newsGrid = document.getElementById('newsGrid');
-                    if (result && result.data && result.data.length > 0) {
-                        newsGrid.innerHTML = '';
-                        
-                        // 1. Копіюємо всі новини та перемішуємо за надійним алгоритмом (Fisher-Yates)
-                        let shuffledNews = [...result.data];
-                        for (let i = shuffledNews.length - 1; i > 0; i--) {
-                            const j = Math.floor(Math.random() * (i + 1));
-                            [shuffledNews[i], shuffledNews[j]] = [shuffledNews[j], shuffledNews[i]];
-                        }
-                        
-                        // 2. Беремо 3 випадкові новини
-                        let newsItems = shuffledNews.slice(0, 3);
-                        
-                        // 3. Сортуємо їх за датою від найстарішої до найсвіжішої (щоб старіші завжди були зліва)
-                        newsItems.sort((a, b) => {
-                            const parseDate = str => {
-                                const [day, month, year] = str.split('.');
-                                return new Date(year, month - 1, day);
-                            };
-                            return parseDate(a.created_at) - parseDate(b.created_at);
-                        });
-                        
-                        newsItems.forEach(news => {
-                            const imgUrl = news.image_url ? news.image_url : '{{ asset("img/Photo/Photo_5.png") }}';
-                            const card = `
-                                <div class="news-card">
-                                    <img src="${imgUrl}" alt="${news.title}">
-                                    <div class="news-card-content">
-                                        <span class="date">${news.created_at}</span>
-                                        <h4>${news.title}</h4>
-                                        <p>${news.description}</p>
-                                        <a href="#" class="btn btn-outline">Детальніше</a>
-                                    </div>
-                                </div>
-                            `;
-                            newsGrid.insertAdjacentHTML('beforeend', card);
-                        });
-                    } else {
-                        newsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Немає останніх новин.</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching news:', error);
-                    document.getElementById('newsGrid').innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Помилка завантаження новин.</p>';
+            const newsGrid = document.getElementById('newsGrid');
+
+            Promise.all([
+                fetch('/api/news-feed').then(r => r.json()),
+                fetch('/api/promotions').then(r => r.json())
+            ])
+            .then(([newsResult, promosResult]) => {
+                // Нормалізуємо новини
+                const newsItems = (newsResult.data || []).map(item => ({
+                    title:       item.title,
+                    description: item.description || '',
+                    image_url:   item.image_url || null,
+                    date:        item.created_at || '',
+                    label:       null
+                }));
+
+                // Нормалізуємо акції
+                const promos = Array.isArray(promosResult) ? promosResult : (promosResult.data || []);
+                const promoItems = promos.map(item => ({
+                    title:       item.title,
+                    description: item.description || '',
+                    image_url:   item.image_url || null,
+                    date:        item.valid_until || '',
+                    label:       'Акція'
+                }));
+
+                // Об'єднуємо та перемішуємо (Fisher-Yates)
+                let combined = [...newsItems, ...promoItems];
+                for (let i = combined.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [combined[i], combined[j]] = [combined[j], combined[i]];
+                }
+
+                const picked = combined.slice(0, 3);
+
+                if (picked.length === 0) {
+                    newsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Немає останніх новин.</p>';
+                    return;
+                }
+
+                newsGrid.innerHTML = '';
+                picked.forEach(item => {
+                    const imgUrl = item.image_url ? item.image_url : '{{ asset("img/Photo/Photo_5.png") }}';
+                    const dateStr = item.label
+                        ? `<span class="date" style="background:#22c55e;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;">${item.label}</span>`
+                        : `<span class="date">${item.date}</span>`;
+                    const card = `
+                        <div class="news-card">
+                            <img src="${imgUrl}" alt="${item.title}">
+                            <div class="news-card-content">
+                                ${dateStr}
+                                <h4>${item.title}</h4>
+                                <p>${item.description}</p>
+                                <a href="#" class="btn btn-outline">Детальніше</a>
+                            </div>
+                        </div>
+                    `;
+                    newsGrid.insertAdjacentHTML('beforeend', card);
                 });
+            })
+            .catch(error => {
+                console.error('Error fetching content:', error);
+                newsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center;">Помилка завантаження.</p>';
+            });
         });
     </script>
     <script src="{{ asset('js/main.js') }}?v={{ time() }}"></script>

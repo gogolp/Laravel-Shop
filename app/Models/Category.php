@@ -8,8 +8,8 @@ class Category extends Model
 {
     protected $fillable = ['name', 'icon_path'];
 
-    public function menuItems()
+    public function products()
     {
-        return $this->hasMany(MenuItem::class);
+        return $this->hasMany(Product::class);
     }
 }

@@ -34,10 +34,10 @@ function renderProducts(categoryId) {
 
     if (filtered.length === 0) {
         content.innerHTML = `
-            <div class="empty-placeholder">
-                <i class="fa-solid fa-utensils"></i>
-                <h3>Товари в цій категорії відсутні</h3>
-                <p>Скоро тут з'являться нові позиції!</p>
+            <div class="empty-placeholder" style="text-align: center; padding: 40px 20px; display: flex; flex-direction: column; align-items: center;">
+                <i class="fa-solid fa-utensils" style="font-size: 48px; color: #ccc; margin-bottom: 16px;"></i>
+                <h3 style="margin-bottom: 8px;">Товари в цій категорії відсутні</h3>
+                <p style="color: #666;">Скоро тут з'являться нові позиції!</p>
             </div>`;
         return;
     }
@@ -139,6 +139,14 @@ async function loadCatalog() {
    ============================================= */
 document.addEventListener('DOMContentLoaded', () => {
     loadCatalog();
+
+    // Hide preloader when everything is loaded
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('global-preloader');
+        if (preloader) {
+            setTimeout(() => preloader.classList.add('hidden'), 300);
+        }
+    });
 
     // Закриття модалки
     const closeBtn = document.querySelector('.close-btn');

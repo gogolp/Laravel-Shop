@@ -9,6 +9,7 @@ use App\Policies\OrderPolicy;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Database\Eloquent\Model;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Model::shouldBeStrict(!app()->isProduction());
+        
         Event::listen(OrderPlaced::class, ProcessOrderCashback::class);
 
         Gate::policy(Order::class, OrderPolicy::class);

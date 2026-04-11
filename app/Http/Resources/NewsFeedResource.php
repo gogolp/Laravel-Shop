@@ -16,7 +16,9 @@ class NewsFeedResource extends JsonResource
             'image_url' => $this->image_url,
             'type' => $this->type,
             'is_active' => $this->is_active,
-            'created_at' => $this->created_at->format('d.m.Y'),
+            'start_date' => $this->start_date?->toDateString(),
+            'end_date' => $this->end_date?->toDateString(),
+            'created_at' => $this->created_at?->toDateString(),
         ];
     }
 }

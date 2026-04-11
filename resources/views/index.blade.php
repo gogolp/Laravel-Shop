@@ -74,7 +74,10 @@
     </script>
 </head>
 <body>
-
+    <!-- Global Preloader -->
+    <div id="global-preloader" class="global-preloader">
+        <div class="loader-spinner"></div>
+    </div>
     <header>
         <div class="container nav-container">
             <a href="{{ url('/') }}" class="logo">
@@ -260,8 +263,8 @@
                         <input type="email" id="feedback-email" name="email" placeholder="your@email.com">
                     </div>
                     <div class="form-group">
-                        <label for="feedback-message">Повідомлення *</label>
-                        <textarea id="feedback-message" name="message" rows="5" placeholder="Ваш відгук або пропозиція..." required></textarea>
+                        <label>Повідомлення *</label>
+                        <textarea id="feedback-message" name="message" rows="5" placeholder="Ваш відгук або пропозиція..." minlength="5" required></textarea>
                     </div>
                     <button type="submit" id="feedback-submit" class="btn btn-primary btn-full">
                         <i class="fa-solid fa-paper-plane"></i> Надіслати пропозицію
@@ -280,6 +283,21 @@
         </div>
     </footer>
 
+    {{-- Модальне вікно для новин та акцій --}}
+    <div id="newsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="newsModalTitle">Назва</h3>
+                <span class="close-btn" id="newsModalClose">&times;</span>
+            </div>
+            <div class="modal-body">
+                <img id="newsModalImg" src="" alt="Image" class="modal-main-img">
+                <p id="newsModalDesc" class="modal-description"></p>
+                <div class="modal-price" id="newsModalDate"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const newsGrid = document.getElementById('newsGrid');
@@ -294,8 +312,11 @@
                     title:       item.title,
                     description: item.description || '',
                     image_url:   item.image_url || null,
-                    date:        item.created_at || '',
-                    label:       null
+                    start_date:  item.start_date || '',
+                    end_date:    item.end_date || '',
+                    date:        item.start_date || '',
+                    label:       'Подія',
+                    type:        'news'
                 }));
 
                 // Нормалізуємо акції
@@ -304,8 +325,12 @@
                     title:       item.title,
                     description: item.description || '',
                     image_url:   item.image_url || null,
+                    start_date:  item.start_date || '',
+                    end_date:    item.valid_until || '',
+                    discount:    item.discount_percent || null,
                     date:        item.valid_until || '',
-                    label:       'Акція'
+                    label:       'Акція',
+                    type:        'promo'
                 }));
 
                 // Об'єднуємо та перемішуємо (Fisher-Yates)
@@ -325,22 +350,86 @@
                 newsGrid.innerHTML = '';
                 picked.forEach(item => {
                     const imgUrl = item.image_url ? item.image_url : '{{ asset("img/Photo/Photo_5.png") }}';
+                    const today = new Date();
+                    today.setHours(0,0,0,0);
+                    const isFuture = item.start_date && new Date(item.start_date) > today;
+
+                    let badgeColor = item.type === 'promo' ? '#ef4444' : '#22c55e';
+                    let badgeText = item.label;
+                    
+                    if (isFuture) {
+                        badgeColor = '#f59e0b'; // Amber color for "Coming Soon"
+                        badgeText = `<i class="fa-solid fa-clock"></i> Скоро: ${item.start_date.split('-').reverse().join('.')}`;
+                    } else if (item.discount) {
+                        badgeText += ` -${item.discount}%`;
+                    }
+
                     const dateStr = item.label
-                        ? `<span class="date" style="background:#22c55e;color:#fff;padding:2px 10px;border-radius:12px;font-size:12px;">${item.label}</span>`
+                        ? `<span class="date" style="background:${badgeColor};color:#fff;padding:2px 12px;border-radius:12px;font-size:11px;font-weight:bold;text-transform:uppercase;">${badgeText}</span>`
                         : `<span class="date">${item.date}</span>`;
-                    const card = `
-                        <div class="news-card">
-                            <img src="${imgUrl}" alt="${item.title}">
-                            <div class="news-card-content">
-                                ${dateStr}
-                                <h4>${item.title}</h4>
-                                <p>${item.description}</p>
-                                <a href="#" class="btn btn-outline">Детальніше</a>
-                            </div>
+                    
+                    const card = document.createElement('div');
+                    card.className = 'news-card';
+                    card.innerHTML = `
+                        <img src="${imgUrl}" alt="${item.title}">
+                        <div class="news-card-content">
+                            ${dateStr}
+                            <h4>${item.title}</h4>
+                            <p>${item.description}</p>
+                            <a href="#" class="btn btn-outline btn-more-info">Детальніше</a>
                         </div>
                     `;
-                    newsGrid.insertAdjacentHTML('beforeend', card);
+                    
+                    const btn = card.querySelector('.btn-more-info');
+                    btn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        
+                        const formatDate = (ds) => {
+                            if (!ds || ds === '0000-00-00') return '';
+                            const d = new Date(ds);
+                            if (isNaN(d.getTime())) return '';
+                            return d.toLocaleDateString('uk-UA');
+                        };
+
+                        const sDate = formatDate(item.start_date);
+                        const eDate = formatDate(item.end_date);
+
+                        const fullDateInfo = (sDate || eDate)
+                            ? `<div style="color: #666; margin-bottom: 10px; font-size: 0.9rem;">
+                                 <i class="fa-regular fa-calendar" style="margin-right:5px;"></i>
+                                 ${sDate ? 'З ' + sDate : ''}
+                                 ${eDate ? (sDate ? ' по ' : 'До ') + eDate : ''}
+                               </div>`
+                            : '';
+
+                        const discountInfo = item.discount 
+                            ? `<span style="background: #ef4444; color: white; padding: 2px 8px; border-radius: 6px; font-weight: bold; margin-left: 10px;">-${item.discount}%</span>`
+                            : '';
+
+                        document.getElementById('newsModalTitle').innerHTML = item.title + discountInfo;
+                        document.getElementById('newsModalImg').src = imgUrl;
+                        document.getElementById('newsModalDesc').textContent = item.description;
+                        document.getElementById('newsModalDate').innerHTML = fullDateInfo;
+                        document.getElementById('newsModal').classList.add('active');
+                        document.body.style.overflow = 'hidden';
+                    });
+
+                    newsGrid.appendChild(card);
                 });
+
+                // Close news modal
+                const nModal = document.getElementById('newsModal');
+                const nCloseBtn = document.getElementById('newsModalClose');
+                const closeNewsModal = () => {
+                    nModal.classList.remove('active');
+                    document.body.style.overflow = '';
+                };
+                if(nCloseBtn) nCloseBtn.addEventListener('click', closeNewsModal);
+                if(nModal) {
+                    nModal.addEventListener('click', (e) => {
+                        if (e.target.id === 'newsModal') closeNewsModal();
+                    });
+                }
             })
             .catch(error => {
                 console.error('Error fetching content:', error);

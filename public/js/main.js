@@ -158,6 +158,14 @@ document.addEventListener('DOMContentLoaded', () => {
     loadHighlights();
     setupFeedbackForm();
 
+    // Hide preloader when everything is loaded
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('global-preloader');
+        if (preloader) {
+            setTimeout(() => preloader.classList.add('hidden'), 300);
+        }
+    });
+
     // Burger Menu Logic
     const burgerBtn = document.getElementById('burgerBtn');
     const navGroup = document.getElementById('navGroup');

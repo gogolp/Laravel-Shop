@@ -43,7 +43,10 @@
     </script>
 </head>
 <body>
-
+    <!-- Global Preloader -->
+    <div id="global-preloader" class="global-preloader">
+        <div class="loader-spinner"></div>
+    </div>
     <header>
         <div class="container nav-container">
             <a href="{{ url('/') }}" class="logo">

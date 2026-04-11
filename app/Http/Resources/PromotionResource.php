@@ -14,7 +14,9 @@ class PromotionResource extends JsonResource
             'title' => $this->title,
             'image_url' => $this->image_url,
             'description' => $this->description,
-            'valid_until' => $this->valid_until?->format('d.m.Y'),
+            'start_date' => $this->start_date?->toDateString(),
+            'valid_until' => $this->valid_until?->toDateString(),
+            'discount_percent' => $this->discount_percent,
         ];
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Feedback;
+use Illuminate\Support\Facades\Cache;
 
 class PublicApiController extends Controller
 {
@@ -15,7 +16,10 @@ class PublicApiController extends Controller
      */
     public function getCategories()
     {
-        $categories = Category::select('id', 'name', 'icon_path')->get();
+        $categories = Cache::remember('categories_public', 3600, function () {
+            return Category::select('id', 'name', 'icon_path')->get();
+        });
+        
         return response()->json($categories);
     }
 
@@ -25,15 +29,22 @@ class PublicApiController extends Controller
      */
     public function getProducts(Request $request)
     {
-        $query = Product::with('category')->select(
-            'id', 'name', 'description', 'price_uah', 'image_url', 'tag', 'category_id'
-        );
+        $tag = $request->query('tag', '');
+        $cacheKey = 'products_public_' . ($tag ? 'tag_'.$tag : 'all');
 
-        if ($request->has('tag') && $request->tag !== '') {
-            $query->where('tag', $request->tag);
-        }
+        $products = Cache::remember($cacheKey, 3600, function () use ($tag) {
+            $query = Product::with('category')->select(
+                'id', 'name', 'description', 'price_uah', 'image_url', 'tag', 'category_id'
+            );
 
-        return response()->json($query->get());
+            if ($tag !== '') {
+                $query->where('tag', $tag);
+            }
+
+            return $query->get();
+        });
+
+        return response()->json($products);
     }
 
     /**

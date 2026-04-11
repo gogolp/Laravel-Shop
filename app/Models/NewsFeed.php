@@ -23,5 +23,7 @@ class NewsFeed extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'start_date' => 'date',
+        'end_date' => 'date',
     ];
 }

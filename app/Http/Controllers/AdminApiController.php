@@ -9,6 +9,10 @@ use App\Models\Feedback;
 use App\Models\Product;
 use App\Models\NewsFeed;
 use App\Models\Promotion;
+use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\ProductRequest;
+use App\Http\Requests\NewsFeedRequest;
+use App\Http\Requests\PromotionRequest;
 
 class AdminApiController extends Controller
 {
@@ -18,6 +22,7 @@ class AdminApiController extends Controller
             $path = $request->file('image')->store('uploads', 'public');
             $validated['image_url'] = '/storage/' . $path;
         }
+        unset($validated['image']);
     }
 
     // === FEEDBACKS ===
@@ -34,12 +39,9 @@ class AdminApiController extends Controller
         return response()->json(Category::all());
     }
 
-    public function storeCategory(Request $request)
+    public function storeCategory(CategoryRequest $request)
     {
-        $validated = $request->validate([
-            'name'  => 'required|string|max:255',
-            'image' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
         $this->handleImageUpload($request, $validated);
         if (isset($validated['image_url'])) {
             $validated['icon_path'] = $validated['image_url'];
@@ -49,13 +51,10 @@ class AdminApiController extends Controller
         return response()->json($category, 201);
     }
     
-    public function updateCategory(Request $request, $id)
+    public function updateCategory(CategoryRequest $request, $id)
     {
         $category = Category::findOrFail($id);
-        $validated = $request->validate([
-            'name'  => 'required|string|max:255',
-            'image' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
         $this->handleImageUpload($request, $validated);
         if (isset($validated['image_url'])) {
             $validated['icon_path'] = $validated['image_url'];
@@ -77,16 +76,9 @@ class AdminApiController extends Controller
         return response()->json(Product::with('category')->get());
     }
 
-    public function storeProduct(Request $request)
+    public function storeProduct(ProductRequest $request)
     {
-        $validated = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price_uah' => 'required|numeric',
-            'tag' => 'nullable|string',
-            'image' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
         
         $this->handleImageUpload($request, $validated);
         $validated['description'] = $validated['description'] ?? '';
@@ -101,17 +93,10 @@ class AdminApiController extends Controller
         return response()->json($item, 201);
     }
 
-    public function updateProduct(Request $request, $id)
+    public function updateProduct(ProductRequest $request, $id)
     {
         $product = Product::findOrFail($id);
-        $validated = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'price_uah' => 'required|numeric',
-            'tag' => 'nullable|string',
-            'image' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
         
         $this->handleImageUpload($request, $validated);
         $validated['description'] = $validated['description'] ?? '';
@@ -133,15 +118,9 @@ class AdminApiController extends Controller
         return response()->json(NewsFeed::all());
     }
 
-    public function storeNews(Request $request)
+    public function storeNews(NewsFeedRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date',
-            'image' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
         
         $this->handleImageUpload($request, $validated);
         $validated['description'] = $validated['description'] ?? '';
@@ -153,16 +132,10 @@ class AdminApiController extends Controller
         return response()->json($news, 201);
     }
 
-    public function updateNews(Request $request, $id)
+    public function updateNews(NewsFeedRequest $request, $id)
     {
         $news = NewsFeed::findOrFail($id);
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date',
-            'image' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
         
         $this->handleImageUpload($request, $validated);
         $validated['description'] = $validated['description'] ?? '';
@@ -183,14 +156,9 @@ class AdminApiController extends Controller
         return response()->json(Promotion::all());
     }
 
-    public function storePromotion(Request $request)
+    public function storePromotion(PromotionRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'valid_until' => 'nullable|date',
-            'image' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
         
         $this->handleImageUpload($request, $validated);
         $validated['description'] = $validated['description'] ?? '';
@@ -199,15 +167,10 @@ class AdminApiController extends Controller
         return response()->json($promo, 201);
     }
 
-    public function updatePromotion(Request $request, $id)
+    public function updatePromotion(PromotionRequest $request, $id)
     {
         $promo = Promotion::findOrFail($id);
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'valid_until' => 'nullable|date',
-            'image' => 'nullable|image|max:5120',
-        ]);
+        $validated = $request->validated();
         
         $this->handleImageUpload($request, $validated);
         $validated['description'] = $validated['description'] ?? '';

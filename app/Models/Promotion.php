@@ -13,10 +13,13 @@ class Promotion extends Model
         'title',
         'image_url',
         'description',
+        'start_date',
         'valid_until',
+        'discount_percent',
     ];
 
     protected $casts = [
+        'start_date' => 'date',
         'valid_until' => 'date',
     ];
 }

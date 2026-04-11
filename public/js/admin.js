@@ -1,5 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     
+    // Hide preloader when everything is loaded
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('global-preloader');
+        if (preloader) {
+            setTimeout(() => preloader.classList.add('hidden'), 300);
+        }
+    });
+
     // ---- Mobile Sidebar Toggle ----
     const sidebar = document.getElementById('admin-sidebar');
     const overlay = document.getElementById('sidebar-overlay');
@@ -33,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.appData = {
         menu: [],
         news: [],
-        promos: [],
+        promos: [], // Keep this for legacy or unify? Let's unify to promo
+        promo: [],
         categories: [],
         feedbacks: []
     };
@@ -300,14 +309,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (type === 'menu') {
             inputs[0].value = item.name || ''; // Name
-            if (item.category_id && item.category_id <= inputs[1].options.length) {
-                inputs[1].selectedIndex = item.category_id - 1; // Category
+            // Find category option by value
+            const catSelect = inputs[1];
+            if (catSelect) {
+                const options = Array.from(catSelect.options);
+                const target = options.find(o => o.value == item.category_id);
+                if (target) catSelect.value = item.category_id;
             }
             inputs[2].value = item.price_uah || 0; // Price
             inputs[3].value = item.description || ''; // Description
-            Array.from(inputs[4].options).forEach((opt, idx) => {
-                if (opt.value === item.tag) inputs[4].selectedIndex = idx;
-            });
+            // Tag select
+            const tagSelect = inputs[4];
+            if (tagSelect) {
+                const tagOptions = Array.from(tagSelect.options);
+                const target = tagOptions.find(o => o.value === item.tag);
+                if (target) tagSelect.value = item.tag;
+                else tagSelect.value = 'Без тегу';
+            }
         } else if (type === 'news') {
             inputs[0].value = item.title || '';
             inputs[1].value = item.description || '';
@@ -317,7 +335,8 @@ document.addEventListener('DOMContentLoaded', () => {
             inputs[0].value = item.title || '';
             inputs[1].value = item.description || '';
             inputs[2].value = item.discount_percent || '';
-            inputs[3].value = item.valid_until ? item.valid_until.split('T')[0] : '';
+            inputs[3].value = item.start_date || ''; // Added start_date mapping
+            inputs[4].value = item.valid_until ? item.valid_until.split('T')[0] : '';
         } else if (type === 'categories') {
             inputs[0].value = item.name || '';
         }
@@ -392,13 +411,13 @@ document.addEventListener('DOMContentLoaded', () => {
             container.innerHTML = '';
             items.forEach(item => {
                 let badgeHTML = '<span class="status-badge active">Активна</span>';
-                if (item.end_date) {
-                    const today = new Date();
-                    today.setHours(0,0,0,0);
-                    const validDate = new Date(item.end_date);
-                    if (validDate < today) {
-                        badgeHTML = '<span class="status-badge inactive" style="background:gray;">Завершена</span>';
-                    }
+                const today = new Date();
+                today.setHours(0,0,0,0);
+                
+                if (item.start_date && new Date(item.start_date) > today) {
+                    badgeHTML = '<span class="status-badge" style="background:#FEF08A;color:#854D0E;">Очікується</span>';
+                } else if (item.end_date && new Date(item.end_date) < today) {
+                    badgeHTML = '<span class="status-badge inactive" style="background:#E5E7EB;color:#4B5563;">Завершена</span>';
                 }
                 container.innerHTML += `
                     <div class="admin-card-row">
@@ -421,19 +440,20 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } else if (type === 'promo') {
             const items = await fetchData('/api/admin/promos');
-            window.appData.promos = items;
+            window.appData.promo = items;
             const container = document.querySelector('#promo .admin-list');
             container.innerHTML = '';
             items.forEach(item => {
                 let badgeHTML = '<span class="status-badge active">Активна</span>';
-                if (item.valid_until) {
-                    const today = new Date();
-                    today.setHours(0,0,0,0);
-                    const validDate = new Date(item.valid_until);
-                    if (validDate < today) {
-                        badgeHTML = '<span class="status-badge inactive" style="background:gray;">Неактивна</span>';
-                    }
+                const today = new Date();
+                today.setHours(0,0,0,0);
+
+                if (item.start_date && new Date(item.start_date) > today) {
+                    badgeHTML = '<span class="status-badge" style="background:#FEF08A;color:#854D0E;">Очікується</span>';
+                } else if (item.valid_until && new Date(item.valid_until) < today) {
+                    badgeHTML = '<span class="status-badge inactive" style="background:#E5E7EB;color:#4B5563;">Неактивна</span>';
                 }
+
                 container.innerHTML += `
                     <div class="admin-card-row">
                         <img src="${item.image_url || '/img/placeholder.png'}" alt="Promo">
@@ -444,12 +464,15 @@ document.addEventListener('DOMContentLoaded', () => {
                             </div>
                             <p>${item.description || ''}</p>
                             <div class="promo-details">
-                                <span class="promo-date">Діє до: ${formatDate(item.valid_until) || 'Постійно'}</span>
+                                <span class="promo-date">
+                                    ${item.start_date ? 'З ' + formatDate(item.start_date) : ''} 
+                                    до ${formatDate(item.valid_until) || 'Постійно'}
+                                </span>
                             </div>
                         </div>
                         <div class="row-actions-promo">
                             <button class="btn-icon edit" onclick="editItem('promo', ${item.id})"><i class="fa-solid fa-pen"></i></button>
-                            <button class="btn-icon delete" onclick="deleteItem('promos', ${item.id})"><i class="fa-solid fa-trash-can"></i></button>
+                            <button class="btn-icon delete" onclick="deleteItem('promo', ${item.id})"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
                 `;
@@ -515,6 +538,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (isUpdate) {
             endpoint += `/${window.currentEditId}`;
+            // Laravel quirk: FormData with multipart needs POST + _method=PUT to handle files correctly
+            formData.append('_method', 'PUT');
         }
 
         try {
@@ -573,6 +598,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 
+                if (startDate) formData.append('start_date', startDate);
                 if (endDate) formData.append('valid_until', endDate);
                 if (fileInput && fileInput.files[0]) {
                     formData.append('image', fileInput.files[0]);

@@ -13,7 +13,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body class="admin-body">
-
+    <!-- Global Preloader -->
+    <div id="global-preloader" class="global-preloader">
+        <div class="loader-spinner"></div>
+    </div>
     <div class="admin-container">
         <aside class="admin-sidebar" id="admin-sidebar">
             <div class="admin-sidebar-top">
@@ -95,7 +98,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Ціна (₴) *</label>
-                                    <input type="number" placeholder="0" required min="0">
+                                    <input type="number" placeholder="0" required min="0" step="0.01">
                                 </div>
                             </div>
 
@@ -281,13 +284,13 @@
                                 <textarea placeholder="Опис умов акції" rows="3"></textarea>
                             </div>
                             <div class="form-group">
-                                <label>Знижка (%) *</label>
-                                <input type="number" placeholder="0" required min="0" max="100">
+                                <label>Знижка (%)</label>
+                                <input type="number" placeholder="0" min="0" max="100">
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
-                                    <label>Дата початку *</label>
-                                    <input type="date" required>
+                                    <label>Дата початку</label>
+                                    <input type="date">
                                 </div>
                                 <div class="form-group">
                                     <label>Дата завершення *</label>

@@ -52,21 +52,21 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 // З авторизацією та правами адміна
-Route::middleware(['auth:sanctum', 'is_admin'])->group(function () {
-    Route::post('admin/product', [ProductController::class, 'store']);
-    Route::put('admin/catalog/product/{id}', [ProductController::class, 'update']);
-    Route::delete('admin/catalog/product/{id}', [ProductController::class, 'destroy']);
+// Route::middleware(['auth:sanctum', 'is_admin'])->group(function () {
+//     Route::post('admin/product', [ProductController::class, 'store']);
+//     Route::put('admin/catalog/product/{id}', [ProductController::class, 'update']);
+//     Route::delete('admin/catalog/product/{id}', [ProductController::class, 'destroy']);
 
-    Route::get('admin/users', [UserController::class, 'users']);
+//     Route::get('admin/users', [UserController::class, 'users']);
 
-    Route::apiResource('admin/categories', CategoryController::class)->except(['index', 'show']);
+//     Route::apiResource('admin/categories', CategoryController::class)->except(['index', 'show']);
 
-    Route::apiResource('admin/locations', LocationController::class)->except(['index', 'show']);
+//     Route::apiResource('admin/locations', LocationController::class)->except(['index', 'show']);
 
-    Route::apiResource('admin/promotions', PromotionController::class)->except(['index', 'show']);
+//     Route::apiResource('admin/promotions', PromotionController::class)->except(['index', 'show']);
 
-    Route::apiResource('admin/news-feed', NewsFeedController::class)->except(['index', 'show']);
+//     Route::apiResource('admin/news-feed', NewsFeedController::class)->except(['index', 'show']);
 
-    Route::get('admin/users/{id}', [UserController::class, 'show']);
-});
+//     Route::get('admin/users/{id}', [UserController::class, 'show']);
+// });
 

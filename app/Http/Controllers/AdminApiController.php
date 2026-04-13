@@ -36,7 +36,10 @@ class AdminApiController extends Controller
     // === CATEGORIES ===
     public function getCategories()
     {
-        return response()->json(Category::all());
+        return response()->json(Category::all()->map(function($cat) {
+            $cat->image_url = $cat->icon_path;
+            return $cat;
+        }));
     }
 
     public function storeCategory(CategoryRequest $request)
@@ -45,9 +48,9 @@ class AdminApiController extends Controller
         $this->handleImageUpload($request, $validated);
         if (isset($validated['image_url'])) {
             $validated['icon_path'] = $validated['image_url'];
-            unset($validated['image_url']);
         }
         $category = Category::create($validated);
+        $category->image_url = $category->icon_path;
         return response()->json($category, 201);
     }
     
@@ -58,9 +61,9 @@ class AdminApiController extends Controller
         $this->handleImageUpload($request, $validated);
         if (isset($validated['image_url'])) {
             $validated['icon_path'] = $validated['image_url'];
-            unset($validated['image_url']);
         }
         $category->update($validated);
+        $category->image_url = $category->icon_path;
         return response()->json($category);
     }
     

@@ -484,12 +484,13 @@ document.addEventListener('DOMContentLoaded', () => {
             container.innerHTML = '';
             items.forEach(item => {
                 container.innerHTML += `
-                    <div class="category-card" style="display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <h4>${item.name}</h4>
+                    <div class="category-card" style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid #f1f5f9;">
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <img src="${item.image_url || '/img/placeholder.png'}" alt="${item.name}" style="width: 40px; height: 40px; object-fit: contain; border-radius: 6px; background: #f8fafc; border: 1px solid #e2e8f0;">
+                            <h4 style="margin:0; font-weight: 600; color: #1e293b;">${item.name}</h4>
                         </div>
-                        <div>
-                            <button class="btn-icon edit-simple" style="margin-right: 5px;" onclick="editItem('categories', ${item.id})"><i class="fa-solid fa-pen"></i></button>
+                        <div style="display: flex; gap: 8px;">
+                            <button class="btn-icon edit-simple" onclick="editItem('categories', ${item.id})"><i class="fa-solid fa-pen"></i></button>
                             <button class="btn-icon delete" style="color: #ef4444;" onclick="deleteItem('categories', ${item.id})"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>

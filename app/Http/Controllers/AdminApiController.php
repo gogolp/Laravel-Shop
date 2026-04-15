@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Category;
 use App\Models\Feedback;
 use App\Models\Product;
@@ -51,6 +52,7 @@ class AdminApiController extends Controller
         }
         $category = Category::create($validated);
         $category->image_url = $category->icon_path;
+        Cache::flush();
         return response()->json($category, 201);
     }
     
@@ -64,12 +66,14 @@ class AdminApiController extends Controller
         }
         $category->update($validated);
         $category->image_url = $category->icon_path;
+        Cache::flush();
         return response()->json($category);
     }
     
     public function destroyCategory($id)
     {
         Category::findOrFail($id)->delete();
+        Cache::flush();
         return response()->json(null, 204);
     }
 
@@ -93,6 +97,7 @@ class AdminApiController extends Controller
         $validated['is_active'] = true;
 
         $item = Product::create($validated);
+        Cache::flush();
         return response()->json($item, 201);
     }
 
@@ -106,12 +111,14 @@ class AdminApiController extends Controller
         $validated['tag'] = $validated['tag'] ?? '';
         
         $product->update($validated);
+        Cache::flush();
         return response()->json($product);
     }
 
     public function destroyProduct($id)
     {
         Product::findOrFail($id)->delete();
+        Cache::flush();
         return response()->json(null, 204);
     }
 

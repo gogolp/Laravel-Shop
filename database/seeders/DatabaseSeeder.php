@@ -17,11 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AuthSeeder::class,
+            DummyDataSeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Optional: User::factory()->create();
     }
 }

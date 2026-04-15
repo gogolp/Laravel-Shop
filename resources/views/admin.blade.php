@@ -128,7 +128,10 @@
 
                             <div class="form-group">
                                 <label>Зображення</label>
-                                <input type="file" accept="image/*" class="file-input">
+                                <label class="btn-upload">
+                                    <i class="fa-solid fa-image"></i> Обрати фото
+                                    <input type="file" accept="image/*" class="file-input" style="display:none;">
+                                </label>
                                 <div class="image-preview-container" style="margin-top: 10px;">
                                     <img class="img-preview" src="" style="display: none; height: 80px; object-fit: cover; border-radius: 8px;">
                                 </div>
@@ -192,9 +195,29 @@
                                     <input type="date" required>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Тип новини</label>
+                                    <select>
+                                        <option value="info">Info (Інформація)</option>
+                                        <option value="event">Event (Подія)</option>
+                                        <option value="promo">Promo (Акція)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Статус</label>
+                                    <select>
+                                        <option value="1">Активна</option>
+                                        <option value="0">Прихована</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label>Зображення (необов'язково)</label>
-                                <input type="file" accept="image/*" class="file-input">
+                                <label class="btn-upload">
+                                    <i class="fa-solid fa-image"></i> Обрати фото
+                                    <input type="file" accept="image/*" class="file-input" style="display:none;">
+                                </label>
                                 <div class="image-preview-container" style="margin-top: 10px;">
                                     <img class="img-preview" src="" style="display: none; height: 80px; object-fit: cover; border-radius: 8px;">
                                 </div>
@@ -299,7 +322,10 @@
                             </div>
                             <div class="form-group">
                                 <label>Зображення акції (необов'язково)</label>
-                                <input type="file" accept="image/*" class="file-input">
+                                <label class="btn-upload">
+                                    <i class="fa-solid fa-image"></i> Обрати фото
+                                    <input type="file" accept="image/*" class="file-input" style="display:none;">
+                                </label>
                                 <div class="image-preview-container" style="margin-top: 10px;">
                                     <img class="img-preview" src="" style="display: none; height: 80px; object-fit: cover; border-radius: 8px;">
                                 </div>

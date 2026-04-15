@@ -21,6 +21,8 @@ class NewsFeedRequest extends FormRequest
             'description' => 'nullable|string',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date',
+            'type' => 'nullable|in:promo,event,info',
+            'is_active' => 'nullable|boolean',
             'image' => 'nullable|image|max:5120',
         ];
     }

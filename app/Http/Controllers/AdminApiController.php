@@ -135,8 +135,8 @@ class AdminApiController extends Controller
         $this->handleImageUpload($request, $validated);
         $validated['description'] = $validated['description'] ?? '';
 
-        $validated['type'] = 'info';
-        $validated['is_active'] = true;
+        $validated['type'] = $validated['type'] ?? 'info';
+        $validated['is_active'] = $validated['is_active'] ?? true;
 
         $news = NewsFeed::create($validated);
         return response()->json($news, 201);

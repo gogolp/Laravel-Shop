@@ -329,13 +329,15 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (type === 'news') {
             inputs[0].value = item.title || '';
             inputs[1].value = item.description || '';
-            inputs[2].value = item.start_date || '';
-            inputs[3].value = item.end_date || '';
+            inputs[2].value = item.start_date ? item.start_date.substring(0, 10) : '';
+            inputs[3].value = item.end_date ? item.end_date.substring(0, 10) : '';
+            inputs[4].value = item.type || 'info';
+            inputs[5].value = item.is_active ? "1" : "0";
         } else if (type === 'promo') {
             inputs[0].value = item.title || '';
             inputs[1].value = item.description || '';
             inputs[2].value = item.discount_percent || '';
-            inputs[3].value = item.start_date || ''; // Added start_date mapping
+            inputs[3].value = item.start_date ? item.start_date.substring(0, 10) : '';
             inputs[4].value = item.valid_until ? item.valid_until.split('T')[0] : '';
         } else if (type === 'categories') {
             inputs[0].value = item.name || '';
@@ -414,7 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const today = new Date();
                 today.setHours(0,0,0,0);
                 
-                if (item.start_date && new Date(item.start_date) > today) {
+                const startDate = item.start_date ? new Date(item.start_date) : null;
+                if (startDate) startDate.setHours(0,0,0,0);
+                
+                if (startDate && startDate > today) {
                     badgeHTML = '<span class="status-badge" style="background:#FEF08A;color:#854D0E;">Очікується</span>';
                 } else if (item.end_date && new Date(item.end_date) < today) {
                     badgeHTML = '<span class="status-badge inactive" style="background:#E5E7EB;color:#4B5563;">Завершена</span>';
@@ -448,7 +453,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const today = new Date();
                 today.setHours(0,0,0,0);
 
-                if (item.start_date && new Date(item.start_date) > today) {
+                const startDate = item.start_date ? new Date(item.start_date) : null;
+                if (startDate) startDate.setHours(0,0,0,0);
+
+                if (startDate && startDate > today) {
                     badgeHTML = '<span class="status-badge" style="background:#FEF08A;color:#854D0E;">Очікується</span>';
                 } else if (item.valid_until && new Date(item.valid_until) < today) {
                     badgeHTML = '<span class="status-badge inactive" style="background:#E5E7EB;color:#4B5563;">Неактивна</span>';
@@ -581,6 +589,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (startDate) formData.append('start_date', startDate);
                 if (endDate) formData.append('end_date', endDate);
                 
+                formData.append('type', inputs[4].value);
+                formData.append('is_active', inputs[5].value);
+
                 if (fileInput && fileInput.files[0]) {
                     formData.append('image', fileInput.files[0]);
                 }
